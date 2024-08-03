@@ -2,7 +2,7 @@
   <div id="basic-layout">
     <a-layout style="height: 100vh;">
       <a-layout-header>
-        <GlobalHeader />
+         <GlobalHeader />
       </a-layout-header>
       <a-layout-content class="content">
         <router-view />
@@ -20,7 +20,10 @@ import GlobalHeader from '../components/GlobalHeader.vue'
 
 </script>
 <style scoped>
-#basic-layout {}
+#basic-layout {
+  height: 100vh;
+  background: linear-gradient(to right, #f5f5f5, #fff);
+}
 
 .content {
   background: linear-gradient(to right, #fefefe, #fff);

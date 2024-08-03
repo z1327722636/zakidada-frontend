@@ -1,6 +1,6 @@
 <template>
   <div name="app">
-    <router-view />
+    <router-view></router-view>
   </div>
 </template>
 <script setup lang="ts">
@@ -18,16 +18,4 @@ onMounted(() => {
 });
 
 </script>
-<style scoped>
-.body {
-  background: white;
-}
-
-#app {
-  width: 100vw;
-  max-width: 100vw;
-  height: 100vh;
-  max-height: 100vh;
-  overflow: hidden
-}
-</style>
+<style scoped></style>
