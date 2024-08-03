@@ -10,27 +10,36 @@
                 <span class="title">zakidada</span>
               </div>
             </a-menu-item>
-            <a-menu-item class="no-caret" v-for="item in visibleRoutes" :key="item.path" :path="item.path">
-              {{ item.name }}
-            </a-menu-item>
+            <template v-for="item in visibleRoutes">
+              <a-sub-menu v-if="item.children" :key="item.path" :title="item.name">
+                <a-menu-item v-for="subItem in item.children" :key="subItem.path" :path="subItem.path">
+                  {{ subItem.name }}
+                </a-menu-item>
+              </a-sub-menu>
+              <a-menu-item v-else :key="item.path" :path="item.path">
+                {{ item.name }}
+              </a-menu-item>
+            </template>
           </a-menu>
         </a-col>
         <a-col flex="100px">
           <div v-if="loginUserStore.loginUser.id"> {{ loginUserStore.loginUser.userName ?? "匿名" }}</div>
           <div v-else> <a-button type="primary">登录</a-button></div>
-
         </a-col>
       </a-row>
     </a-space>
   </div>
 </template>
-
 <script setup lang="ts">
 import { routes } from '@/router/routes';
 import { useRouter, useRoute } from 'vue-router';
-import { ref, computed } from 'vue';
+import { ref, computed, defineProps, onMounted } from 'vue';
 import { useLoginUserStore } from '@/store/userStore';
 import checkAccess from '@/access/checkAccess';
+
+const props = defineProps<{
+  parentPath?: string;
+}>();
 
 const router = useRouter();
 const route = useRoute();
@@ -49,9 +58,9 @@ const doMenuItemClick = (key: string, e: MouseEvent) => {
 
 // 动态计算当前路由的子路由数组
 const currentChildrenRoutes = computed(() => {
-  // 找到当前路由的完整路径前缀
-  const parentPath = `/${route.path.split('/')[0]}`;
-  const parentRoute = routes.find(r => r.path === parentPath);
+  // 使用传递的父路由路径或默认为 `/`
+  const parentRoutePath = props.parentPath || '/';
+  const parentRoute = routes.find(r => r.path === parentRoutePath);
   return parentRoute ? parentRoute.children || [] : [];
 });
 
@@ -67,19 +76,26 @@ const visibleRoutes = computed(() => {
     }
     return true;
   });
-})
-</script>
+});
 
+// 当组件挂载时，设置默认选中的菜单项
+onMounted(() => {
+  if (visibleRoutes.value.length > 0 && selectedKeys.value === '/') {
+    selectedKeys.value = visibleRoutes.value[0].path;
+    router.push(visibleRoutes.value[0].path);
+  }
+});
+</script>
 
 <style scoped>
 #global-header {
+  width: 100vw;
   height: 64px;
   line-height: 64px;
   background: var(--color-bg-1);
   padding: 0 50px;
   position: relative;
   z-index: 1;
-  margin-bottom: 16px;
   box-shadow: #eee 1px 1px 5px;
 }
 
