@@ -7,7 +7,7 @@ import ACCESS_ENUM from '@/access/accessEnum'
  * 登录用户信息全局状态
  */
 export const useLoginUserStore = defineStore('loginUser', () => {
-  const loginUser = ref<API.LoginUserVO>({})
+  const loginUser = ref<API.LoginUserVO>({userName: "未登录",})
 
   function setNewLoginUser(user: API.LoginUserVO) {
     loginUser.value = user
@@ -18,9 +18,8 @@ export const useLoginUserStore = defineStore('loginUser', () => {
     if (resUser.data.code === 0 && resUser.data.data) {
       loginUser.value = resUser.data.data
     } else {
-      loginUser.value = {
-        userRole: ACCESS_ENUM.NOT_LOGIN
-      }
+      loginUser.value = { userRole: ACCESS_ENUM.NOT_LOGIN }
+
       // setTimeout(() => {
       //   loginUser.value = {
       //     // userRole: ACCESS_ENUM.NOT_LOGIN
@@ -31,5 +30,6 @@ export const useLoginUserStore = defineStore('loginUser', () => {
       // }, 3000)
     }
   }
+
   return { loginUser, setNewLoginUser, getUserInfo }
 })

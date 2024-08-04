@@ -89,7 +89,6 @@ onMounted(() => {
 
 <style scoped>
 #global-header {
-  width: 100vw;
   height: 64px;
   line-height: 64px;
   background: var(--color-bg-1);

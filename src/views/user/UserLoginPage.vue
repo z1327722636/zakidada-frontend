@@ -51,10 +51,13 @@ const handleSubmit = async () => {
     if (response.data.code === 0) {
       await loginUserStore.getUserInfo();
       message.success('登录成功');
+      // 获取 URL 中的 `redirect` 参数
+      const redirect = new URLSearchParams(window.location.search).get('redirect');
+      // 跳转到指定页面或默认首页
       router.push({
-        path: "/",
+        path: redirect || "/",
         replace: true,
-      })
+      });
     } else {
       message.error("登录失败，" + response.data.message);
     }

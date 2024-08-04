@@ -56,8 +56,6 @@ const doMenuItemClick = (key, e) => {
 <style scoped>
 #admin {
   display: flex; /* 使用 flex 布局 */
-  height: 100vh; /* 设置为视口高度 */
-  width: 100%;
   box-sizing: border-box;
 }
 
@@ -67,7 +65,6 @@ const doMenuItemClick = (key, e) => {
 }
 
 .adminContent {
-  flex-grow: 1; /* 使内容区域扩展 */
   height: 100%;
   padding: 20px;
   overflow: auto;
