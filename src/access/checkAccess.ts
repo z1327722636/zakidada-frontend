@@ -14,7 +14,12 @@ const checkUserAccess = (loginUser: any, needAccess = ACCESS_ENUM.NOT_LOGIN) => 
     case ACCESS_ENUM.NOT_LOGIN:
       return true
     case ACCESS_ENUM.USER:
-      return loginUserAccess !== ACCESS_ENUM.NOT_LOGIN
+      console.log("yonghu",loginUserAccess)
+      if(loginUserAccess === ACCESS_ENUM.NOT_LOGIN){
+        return false
+      }else {
+        return true
+      }
     case ACCESS_ENUM.ADMIN:
       return loginUserAccess === ACCESS_ENUM.ADMIN
     default:

@@ -1,4 +1,4 @@
-<!-- <template>
+ <template>
   <a-space direction="vertical" :style="{ width: '100%' }">
     <a-upload :fileList="file ? [file] : []" :show-file-list="false" :custom-request="customRequest">
       <template #upload-button>
@@ -86,4 +86,4 @@ const customRequest = async (option: any) => {
     onError(new Error(res.data.message));
   }
 };
-</script> -->
+</script>

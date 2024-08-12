@@ -4,12 +4,14 @@
 //4.如果拥有该权限，放行，否则拒绝
 
 import { useLoginUserStore } from '@/store/userStore'
-import router from '@/router'
+import {router} from '@/router'
 import ACCESS_ENUM from '@/access/accessEnum'
 import checkAccess from '@/access/checkAccess'
+import {useUnsavedChangesStore} from "@/store/unsavedChangesStore";
 
 router.beforeEach(async (to, from, next) => {
   const loginUserStore = useLoginUserStore()
+  const unsavedChangesStore = useUnsavedChangesStore()
   let loginUser = loginUserStore.loginUser
 
   //自动登录，为了避免你登陆，第一次进入新的页面，需要重新登录
@@ -24,11 +26,13 @@ router.beforeEach(async (to, from, next) => {
   // 获取目标路由的访问权限要求，默认为 NOT_LOGIN
   const needAccess = (to.meta?.access as string) ?? ACCESS_ENUM.NOT_LOGIN
 
+
   // 如果目标页面需要权限
   if (needAccess !== ACCESS_ENUM.NOT_LOGIN) {
     // 如果用户未登录，重定向到登录页面
     if (!loginUser || loginUser.userRole === ACCESS_ENUM.NOT_LOGIN) {
-      next(`/user/login?redirect=${to.fullPath}`)
+      const targetPath = to.fullPath;
+      next(`/user/login?redirect=${targetPath}`);
       return
     }
     // 如果用户已登录但权限不足，重定向到无权限页面

@@ -66,7 +66,9 @@ const initSearchParams = {
   pageSize: 10
 }
 const searchParams = ref<API.UserQueryRequest>({
-  ...initSearchParams
+  ...initSearchParams,
+  sortField: "updateTime",
+  sortOrder: "descend",
 })
 const formSearchParams = ref<API.UserQueryRequest>({})
 

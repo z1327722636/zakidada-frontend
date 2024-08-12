@@ -1,40 +1,145 @@
 import { type RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import UserLayout from '../Layouts/UserLayout.vue'
-import BasicLayout from '../Layouts/BasicLayout.vue'
-import AboutView from '@/views/AboutView.vue'
-import UserLoginPage from '@/views/user/UserLoginPage.vue'
-import UserRegisterPage from '@/views/user/UserRegisterPage.vue'
-import Admin from '@/views/admin/Admin.vue'
+import { defineAsyncComponent } from 'vue'
 import ACCESS_ENUM from '@/access/accessEnum'
-import AdminUserPage from "@/views/admin/AdminUserPage.vue";
 
 export const routes: Array<RouteRecordRaw> = [
-
   {
     path: '/',
     name: 'main',
-    redirect:'/home',// 主页
-    component: BasicLayout,
+    redirect: '/home', // 主页
+    component: defineAsyncComponent(() => import('../Layouts/BasicLayout.vue')),
     children: [
       {
         path: '/home',
-        name: 'home', // 首页
-        component: HomeView
+        name: '主页', // 首页
+        component: defineAsyncComponent(() => import('../views/HomeView.vue'))
       },
       {
-        path: '/about',
-        name: 'about', // 关于
-        component: AboutView,
+        path: '/app/detail/:id',
+        name: '应用详情',
+        component: defineAsyncComponent(() => import('@/views/app/AppDetailPage.vue')),
+        props: true,
+        meta: {
+          hideInMenu: true
+        }
+      },
+      {
+        path: '/add/app',
+        name: '创建应用',
+        component: defineAsyncComponent(() => import('@/views/add/AddAppPage.vue'))
+      },
+      {
+        path: '/add/app/:id',
+        name: '修改应用',
+        props: true,
+        component: defineAsyncComponent(() => import('@/views/add/AddAppPage.vue')),
+        meta: {
+          hideInMenu: true
+        }
+      },
+      {
+        path: '/add/question/:appId',
+        name: '创建题目',
+        component: defineAsyncComponent(() => import('@/views/add/AddQuestionPage.vue')),
+        props: true,
+        meta: {
+          hideInMenu: true
+        }
+      },
+      {
+        path: '/add/scoring_result/:appId',
+        name: '创建评分',
+        component: defineAsyncComponent(() => import('@/views/add/AddScoringResultPage.vue')),
+        props: true,
+        meta: {
+          hideInMenu: true
+        }
+      },
+      {
+        path: '/Demo',
+        name: 'Demo', // 关于
+        component: defineAsyncComponent(() => import('@/views/demoView.vue')),
         meta: {
           access: ACCESS_ENUM.USER // 用户权限
         }
       },
       {
+        path: '/answer/do/:appId',
+        name: '答题',
+        component: defineAsyncComponent(() => import('@/views/answer/DoAnswerPage.vue')),
+        props: true,
+        meta: {
+          hideInMenu: true,
+          access: ACCESS_ENUM.USER
+        }
+      },
+      {
+        path: '/answer/result/:id',
+        name: '答题结果',
+        component: defineAsyncComponent(() => import('@/views/answer/AnswerResultPage.vue')),
+        props: true,
+        meta: {
+          hideInMenu: true,
+          access: ACCESS_ENUM.USER
+        }
+      },
+      {
+        path: '/answer/my',
+        name: '我的答题',
+        component: defineAsyncComponent(() => import('@/views/answer/MyAnswerPage.vue')),
+        meta: {
+          access: ACCESS_ENUM.USER
+        }
+      },
+      {
+        path: '/app/my',
+        name: '我的应用',
+        component: defineAsyncComponent(() => import('@/views/app/MyAppPage.vue')),
+        meta: {
+          access: ACCESS_ENUM.USER
+        }
+      },
+      {
+        path: '/app_statistic',
+        name: '应用统计',
+        component: defineAsyncComponent(() => import('@/views/statistic/AppStatisticPage.vue')),
+        meta: {
+          access: ACCESS_ENUM.ADMIN
+        }
+      },
+      {
+        path: '/my',
+        name: '个人中心',
+        component: defineAsyncComponent(() => import('@/views/My/myView.vue')),
+        redirect: '/my/detail',
+        meta: {
+          access: ACCESS_ENUM.USER,
+          hideInMenu: true
+        },
+        children: [
+          {
+            path: '/my/detail',
+            name: '个人资料',
+            component: defineAsyncComponent(() => import('@/views/My/MyDetailPage.vue')),
+            meta: {
+              access: ACCESS_ENUM.USER // 用户权限
+            }
+          },
+          {
+            path: '/my/account',
+            name: '我的账号',
+            component: defineAsyncComponent(() => import('@/views/My/MyAccountPage.vue')),
+            meta: {
+              access: ACCESS_ENUM.USER
+            }
+          }
+        ]
+      },
+      {
         path: '/admin',
         name: '管理', // 管理
-        redirect:'/admin/user',
-        component: Admin,
+        redirect: '/admin/user',
+        component: defineAsyncComponent(() => import('@/views/admin/Admin.vue')),
         meta: {
           access: ACCESS_ENUM.ADMIN // 管理员权限
         },
@@ -42,38 +147,62 @@ export const routes: Array<RouteRecordRaw> = [
           {
             path: '/admin/user',
             name: '用户管理',
-            component: AdminUserPage,
-            meta: {
-              access: ACCESS_ENUM.ADMIN // 用户权限
-            }
-          },{
-            path: '/admin/app',
-            name: '应用管理',
-            component: HomeView,
+            component: defineAsyncComponent(() => import('@/views/admin/AdminUserPage.vue')),
             meta: {
               access: ACCESS_ENUM.ADMIN // 用户权限
             }
           },
+          {
+            path: '/admin/app',
+            name: '应用管理',
+            component: defineAsyncComponent(() => import('@/views/admin/AdminAppPage.vue')),
+            meta: {
+              access: ACCESS_ENUM.ADMIN
+            }
+          },
+          {
+            path: '/admin/question',
+            name: '题目管理',
+            component: defineAsyncComponent(() => import('@/views/admin/AdminQuestionPage.vue')),
+            meta: {
+              access: ACCESS_ENUM.ADMIN
+            }
+          },
+          {
+            path: '/admin/scoring_result',
+            name: '评分管理',
+            component: defineAsyncComponent(() => import('@/views/admin/AdminScoringResultPage.vue')),
+            meta: {
+              access: ACCESS_ENUM.ADMIN
+            }
+          },
+          {
+            path: '/admin/user_answer',
+            name: '回答管理',
+            component: defineAsyncComponent(() => import('@/views/admin/AdminUserAnswerPage.vue')),
+            meta: {
+              access: ACCESS_ENUM.ADMIN
+            }
+          }
         ]
-      }
+      },
     ]
   },
-
   {
-    path: '/user',// 用户
+    path: '/user', // 用户
     name: 'user',
     redirect: '/user/login',
-    component: UserLayout,
+    component: defineAsyncComponent(() => import('@/Layouts/UserLayout.vue')),
     children: [
       {
         path: '/user/login',
         name: 'user-login', // 用户登录
-        component: UserLoginPage
+        component: defineAsyncComponent(() => import('@/views/user/UserLoginPage.vue'))
       },
       {
         path: '/user/register',
         name: 'user-register', // 用户注册
-        component: UserRegisterPage
+        component: defineAsyncComponent(() => import('@/views/user/UserRegisterPage.vue'))
       }
     ]
   }

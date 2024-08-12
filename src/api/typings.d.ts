@@ -1,4 +1,16 @@
 declare namespace API {
+  type AiGenerateQuestionRequest = {
+    appId?: number;
+    optionNumber?: number;
+    questionNumber?: number;
+  };
+
+  type aiGenerateQuestionSSEUsingGETParams = {
+    appId?: number;
+    optionNumber?: number;
+    questionNumber?: number;
+  };
+
   type App = {
     appDesc?: string;
     appIcon?: string;
@@ -22,6 +34,16 @@ declare namespace API {
     appName?: string;
     appType?: number;
     scoringStrategy?: number;
+  };
+
+  type AppAnswerCountDTO = {
+    answerCount?: number;
+    appId?: number;
+  };
+
+  type AppAnswerResultCountDTO = {
+    resultCount?: string;
+    resultName?: string;
   };
 
   type AppEditRequest = {
@@ -91,6 +113,24 @@ declare namespace API {
   type BaseResponseBoolean_ = {
     code?: number;
     data?: boolean;
+    message?: string;
+  };
+
+  type BaseResponseListAppAnswerCountDTO_ = {
+    code?: number;
+    data?: AppAnswerCountDTO[];
+    message?: string;
+  };
+
+  type BaseResponseListAppAnswerResultCountDTO_ = {
+    code?: number;
+    data?: AppAnswerResultCountDTO[];
+    message?: string;
+  };
+
+  type BaseResponseListQuestionContentDTO_ = {
+    code?: number;
+    data?: QuestionContentDTO[];
     message?: string;
   };
 
@@ -206,6 +246,11 @@ declare namespace API {
     id?: number;
   };
 
+  type getAppAnswerResultCountUsingGETParams = {
+    /** appId */
+    appId?: number;
+  };
+
   type getAppVOByIdUsingGETParams = {
     /** id */
     id?: number;
@@ -240,6 +285,7 @@ declare namespace API {
     createTime?: string;
     id?: number;
     updateTime?: string;
+    userAccount?: string;
     userAvatar?: string;
     userName?: string;
     userProfile?: string;
@@ -518,6 +564,10 @@ declare namespace API {
     userId?: number;
   };
 
+  type SseEmitter = {
+    timeout?: number;
+  };
+
   type uploadFileUsingPOSTParams = {
     biz?: string;
   };
@@ -564,6 +614,7 @@ declare namespace API {
   type UserAnswerAddRequest = {
     appId?: number;
     choices?: string[];
+    id?: number;
   };
 
   type UserAnswerEditRequest = {
@@ -628,6 +679,7 @@ declare namespace API {
     sortField?: string;
     sortOrder?: string;
     unionId?: string;
+    userAccount?: string;
     userName?: string;
     userProfile?: string;
     userRole?: string;
@@ -656,6 +708,7 @@ declare namespace API {
   type UserVO = {
     createTime?: string;
     id?: number;
+    userAccount?: string;
     userAvatar?: string;
     userName?: string;
     userProfile?: string;

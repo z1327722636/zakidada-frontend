@@ -53,9 +53,16 @@ const handleSubmit = async () => {
       message.success('登录成功');
       // 获取 URL 中的 `redirect` 参数
       const redirect = new URLSearchParams(window.location.search).get('redirect');
+      let targetPath = redirect;
+      console.log(targetPath)
+      // 检查是否是完整的 URL
+      if (targetPath&&targetPath.startsWith('http')) {
+        const url = new URL(targetPath);
+        targetPath = url.pathname;  // 只获取路径部分
+      }
       // 跳转到指定页面或默认首页
       router.push({
-        path: redirect || "/",
+        path:   targetPath  ? targetPath: '/',
         replace: true,
       });
     } else {

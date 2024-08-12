@@ -18,8 +18,11 @@
     "@bytemd/plugin-highlight": "^1.21.0",
     "@bytemd/vue-next": "^1.21.0",
     "axios": "^1.7.2",
+    "echarts": "^5.5.1",
     "pinia": "^2.2.0",
+    "qrcode": "^1.5.4",
     "vue": "^3.4.29",
+    "vue-echarts": "^7.0.1",
     "vue-router": "^4.3.3"
   },
   "devDependencies": {

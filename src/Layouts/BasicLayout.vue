@@ -1,48 +1,54 @@
 <template>
   <div id="basic-layout">
-    <a-layout style="height: 100vh;">
+    <a-layout class="layout">
       <a-layout-header>
-         <GlobalHeader />
+        <GlobalHeader />
       </a-layout-header>
       <a-layout-content class="content">
         <router-view />
       </a-layout-content>
       <a-layout-footer class="footer">
-        <a href="https://github.com/z1327722636"> @程序员zaki出品</a>
+        <a href="https://github.com/z1327722636">@程序员zaki出品</a>
       </a-layout-footer>
     </a-layout>
   </div>
 </template>
+
 <script setup>
 import GlobalHeader from '../components/GlobalHeader.vue'
-
-
-
 </script>
+
 <style scoped>
 #basic-layout {
-  height: 100vh;
-  background: linear-gradient(to right, #f5f5f5, #fff);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .content {
-  background: linear-gradient(to right, #fefefe, #fff);
-  margin-bottom: 28px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto 28px;
   padding: 20px;
+  flex: 1;
 }
 
 .footer {
   text-align: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   padding: 10px;
   background-color: #efefef;
-
 }
 
 a {
-  color: #000
+  color: #000;
+  text-decoration: none;
 }
 </style>

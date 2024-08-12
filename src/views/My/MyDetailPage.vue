@@ -1,0 +1,132 @@
+<template>
+  <div class="profile-container">
+    <div class="profile-header">
+      <a-avatar alt="User Avatar" class="avatar"
+        ><img v-if="user.avatar" alt="avatar" :src="user.avatar" />
+        <span v-else>{{ user.nickname ?? '匿名' }}</span>
+      </a-avatar>
+      <div class="user-info">
+        <h2 class="username">{{ user.nickname ?? '匿名' }}</h2>
+        <!--        <p class="user-level">等级：{{ user.level }}</p>-->
+        <p class="user-role" >{{user.role}}</p>
+        <button @click="editProfile" class="edit-button">编辑个人信息</button>
+      </div>
+    </div>
+    <div class="profile-details">
+      <h3>基本信息</h3>
+      <a-descriptions style="margin-top: 20px" :data="data" size="large" :column="1" />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useLoginUserStore } from '@/store/userStore'
+
+const loginUserStore = useLoginUserStore()
+
+const user = ref({
+  avatar: loginUserStore.loginUser.userAvatar, // 头像的路径
+  nickname: loginUserStore.loginUser.userName,
+  userId: loginUserStore.loginUser.id,
+  userAccount: loginUserStore.loginUser.userAccount,
+  gender: null,
+  userProfile: loginUserStore.loginUser.userProfile,
+  role: loginUserStore.loginUser.userRole
+})
+const data = [
+  {
+    label: '用户昵称',
+    value: user.value.nickname
+  },
+  {
+    label: '用户ID',
+    value: user.value.userId
+  },
+  {
+    label: '用户账号',
+    value: user.value.userAccount
+  },
+  {
+    label: '性别',
+    value: '隐藏'
+  },
+  {
+    label: '个人简介',
+    value: user.value.userProfile ?? '这个人很懒，什么都没有留下'
+  }
+]
+
+const editProfile = () => {
+  alert('编辑个人信息功能待实现')
+}
+</script>
+
+<style scoped>
+.profile-container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-details {
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.username {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.user-level {
+  font-size: 14px;
+  color: #888;
+}
+
+.user-role{
+  color: #f39c12;
+}
+
+.edit-button {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background-color: #2980b9;
+}
+
+.profile-details h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 18px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+</style>
