@@ -9,9 +9,10 @@
         <h2 class="username">{{ user.nickname ?? '匿名' }}</h2>
         <!--        <p class="user-level">等级：{{ user.level }}</p>-->
         <p class="user-role" >{{user.role}}</p>
-        <button @click="editProfile" class="edit-button">编辑个人信息</button>
+        <UpdataUser  :user="user" :upUserData="onchangeData">编辑个人信息</UpdataUser>
       </div>
     </div>
+<!--    {{user}}-->
     <div class="profile-details">
       <h3>基本信息</h3>
       <a-descriptions style="margin-top: 20px" :data="data" size="large" :column="1" />
@@ -20,8 +21,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {computed, ref, watchEffect} from 'vue'
 import { useLoginUserStore } from '@/store/userStore'
+import UpdataUser from "@/views/My/components/UpdataUser.vue";
 
 const loginUserStore = useLoginUserStore()
 
@@ -30,11 +32,10 @@ const user = ref({
   nickname: loginUserStore.loginUser.userName,
   userId: loginUserStore.loginUser.id,
   userAccount: loginUserStore.loginUser.userAccount,
-  gender: null,
   userProfile: loginUserStore.loginUser.userProfile,
   role: loginUserStore.loginUser.userRole
 })
-const data = [
+const data = computed(()=>{return [
   {
     label: '用户昵称',
     value: user.value.nickname
@@ -55,11 +56,13 @@ const data = [
     label: '个人简介',
     value: user.value.userProfile ?? '这个人很懒，什么都没有留下'
   }
-]
+]})
 
-const editProfile = () => {
-  alert('编辑个人信息功能待实现')
+const onchangeData = (updatedUser) => {
+  user.value = {...user.value, ...updatedUser}
 }
+
+
 </script>
 
 <style scoped>

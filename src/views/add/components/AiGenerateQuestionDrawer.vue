@@ -115,41 +115,6 @@ const handleSubmit = async () => {
   }
 }
 
-// const handleSSESubmit = async () => {
-//   if (!appId) {
-//     return
-//   }
-//   sseSubmitting.value = true // 开始请求前设置为true
-//   const eventSource = new EventSource(
-//     'http://localhost:8101/api/question/ai_generate/sse' +
-//       `?appId=${appId.value}&optionNumber=${form.value.optionNumber}&questionNumber=${form.value.questionNumber}`
-//   )
-//   let first = true
-//   eventSource.onmessage = (event) => {
-//     // 监听message事件
-//     if (first) {
-//       props.onSSEStart?.(event)
-//       handleCancel()
-//       first = !first
-//     }
-//     props.onSSESuccess?.(JSON.parse(event.data))
-//   }
-//   eventSource.onopen = (event) => {
-//     // 监听open事件
-//     console.log('连接成功')
-//   }
-//   eventSource.onerror = (event) => {
-//     // 监听error事件
-//     if (event.eventPhase === EventSource.CLOSED) {
-//       console.log('关闭连接')
-//       props.onSSEClose?.(event)
-//       eventSource.close()
-//     } else {
-//       eventSource.close()
-//     }
-//   }
-//   sseSubmitting.value = false
-// }
 
 /**
  * 提交（实时生成）

@@ -22,6 +22,7 @@
     <a-table
       :columns="columns"
       :data="dataList"
+      @row-click="doCardClick"
       :pagination="{
         showTotal: true,
         pageSize: searchParams.pageSize,
@@ -69,7 +70,9 @@ import { dayjs } from '@arco-design/web-vue/es/_utils/date'
 import { deleteAppUsingPost, listMyAppVoByPageUsingPost } from '@/api/appController'
 import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP, REVIEW_STATUS_MAP } from '../../constant/app'
 import { useLoginUserStore } from '@/store/userStore'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 // 定义数据
 const dataList = ref<API.AppVO[]>([])
 const totalPage = ref<number>(0)
@@ -87,6 +90,10 @@ const searchParams = ref<API.AppQueryRequest>({
 })
 const formSearchParams = ref<API.AppQueryRequest>({})
 
+
+const doCardClick = (record) => {
+  router.push(`/app/detail/${record.id}`)
+}
 /**
  * 数据渲染
  */
@@ -133,7 +140,6 @@ const doSearch = () => {
   }
 }
 
-const doEdit = (record: API.AppVO) => {}
 /**
  * 删除
  * @param record

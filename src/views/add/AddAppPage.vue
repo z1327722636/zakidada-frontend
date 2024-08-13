@@ -15,8 +15,9 @@
       <a-form-item field="appDesc" label="应用描述" :rules="rules.appDesc">
         <a-textarea allow-clear v-model="form.appDesc" placeholder="请输入应用描述" auto-size />
       </a-form-item>
-      <a-form-item field="appIcon" label="应用图标" :rules="rules.appIcon">
-        <a-input allow-clear v-model="form.appIcon" placeholder="请输入应用图标" />
+      <a-form-item field="appIcon" label="应用图标" >
+<!--        <a-input allow-clear v-model="form.appIcon" placeholder="请输入应用图标" />-->
+        <ImageUpload biz="appIcon"  :on-change="doChange" :value="form.appIcon"/>
       </a-form-item>
       <a-form-item field="appType" label="应用类型" :rules="rules.appType">
         <a-select v-model="form.appType" placeholder="请选择应用类型">
@@ -49,6 +50,7 @@ import message from '@arco-design/web-vue/es/message'
 import { addAppUsingPost, editAppUsingPost, getAppVoByIdUsingGet } from '@/api/appController'
 import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from '@/constant/app'
 import { useUnsavedChangesStore } from '@/store/unsavedChangesStore'
+import ImageUpload from "@/components/ImageUpload.vue";
 
 const router = useRouter()
 const props = withDefaults(defineProps<{ id: String }>(), {
@@ -72,11 +74,6 @@ const rules = ref({
   appDesc: [
     { required: true, message: '应用描述不能为空', trigger: 'blur' },
     { minLength: 1, maxLength: 200, message: '应用描述长度需在5到200个字符之间', trigger: 'blur' }
-  ],
-  appIcon: [
-    {
-      type: 'url'
-    }
   ],
   appType: [{ required: true, message: '请选择应用类型', trigger: 'change' }],
   scoringStrategy: [{ required: true, message: '请选择评分策略', trigger: 'change' }]
@@ -150,6 +147,10 @@ const handleSubmit = async () => {
   }
 }
 
+//获取图片url
+const doChange = (url: any) => {
+  form.value.appIcon = url;
+}
 
 // 处理浏览器的返回和刷新
 const handleBeforeUnload = (event: BeforeUnloadEvent) => {

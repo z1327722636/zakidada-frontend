@@ -35,6 +35,7 @@
   <a-table
     :columns="columns"
     :data="dataList"
+    @row-click="record => router.push(`/answer/result/${record.id}`)"
     :pagination="{
       showTotal: true,
       pageSize: searchParams.pageSize,
@@ -76,8 +77,10 @@ import API from "@/api";
 import message from "@arco-design/web-vue/es/message";
 import { dayjs } from "@arco-design/web-vue/es/_utils/date";
 import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from "@/constant/app";
+import {useRouter} from "vue-router";
 
 const formSearchParams = ref<API.UserAnswerQueryRequest>({});
+const router = useRouter()
 
 // 初始化搜索条件（不应该被修改）
 const initSearchParams = {

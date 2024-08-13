@@ -1,12 +1,14 @@
 <template>
   <div class="container">
     <h2>Markdown Demo</h2>
-    <Editor v-model="markdownContent" />
-    <Viewer :value="markdownContent" />
+    <Editor :value="markdownContent"
+            :handleChange="handleChange" />
+    <Viewer />
   </div>
   <div class="container2">
     <h2>Upload Demo</h2>
   <Upload biz="user_avatar" upload-url="http://localhost:8101/api/file/upload" upload-function="" :on-change="doChange"/>
+  <ImageUpload biz="user_avatar"  :on-change="doChange"/>
   </div>
 </template>
 
@@ -17,15 +19,15 @@ import Viewer from '../components/MdViewer.vue'; // 假设 Viewer 组件放在 c
 import 'bytemd/dist/index.css'
 import Upload from "@/components/Upload.vue";
 import API from '@/api'
+import ImageUpload from "@/components/ImageUpload.vue";
 // import {uploadFileUsingPost} from "@/api/fileController";
 
 // 创建一个 ref 来存储 Markdown 内容
-const markdownContent = ref<string>('');
+const markdownContent = ref<string>('给自己一个详细的介绍吧');
 
-// 定义一个方法来更新 markdownContent
-const updateContent = (newContent: string) => {
-  markdownContent.value = newContent;
-};
+const handleChange = (value: string) => {
+    markdownContent.value = value;
+}
 const doChange = (fileList: any) => {
   console.log(fileList)
 }
@@ -34,7 +36,7 @@ const doChange = (fileList: any) => {
 .bytemd {
   max-height: 600px;
 }
-.container2{
-  width: 60px;
+.container{
+  width: 300px;
 }
 </style>

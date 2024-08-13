@@ -32,8 +32,9 @@
             auto-size
           />
         </a-form-item>
-        <a-form-item field="resultPicture" label="结果图标" :rules="rules.resultPicture">
-          <a-input allow-clear v-model="form.resultPicture" placeholder="请输入结果图标" />
+        <a-form-item field="resultPicture" label="结果图标" >
+<!--          <a-input allow-clear v-model="form.resultPicture" placeholder="请输入结果图标" />-->
+          <ImageUpload biz="resultPicture"  :on-change="doChange" :value="form.resultPicture"/>
         </a-form-item>
         <a-form-item
           v-if="appType === 1"
@@ -80,6 +81,7 @@ import {
   addScoringResultUsingPost,
   editScoringResultUsingPost
 } from '@/api/scoringResultController'
+import ImageUpload from "@/components/ImageUpload.vue";
 
 const props = withDefaults(defineProps<{ appId: string }>(), {
   appId: () => ''
@@ -102,7 +104,6 @@ const rules = ref({
     { required: true, message: '结果描述不能为空', trigger: 'blur' },
     { minLength: 3, maxLength: 500, message: '结果描述长度需在10到500个字符之间', trigger: 'blur' }
   ],
-  resultPicture: [{ type: 'url' }],
   resultProp: [{ type: 'tag', message: '结果集不能为空', trigger: 'blur' }],
   resultScoreRange: [
     { required: true, type: 'number', message: '评分范围不能为空', trigger: 'blur' },
@@ -116,6 +117,11 @@ const tableRef = ref<any>()
 
 const appType = ref<number>() // 确保 appType 是 number 类型或 null
 const updateId = ref<any>()
+
+//获取图片url
+const doChange = (url: any) => {
+  form.value.resultPicture = url;
+}
 
 /**
  * 获取应用类型
