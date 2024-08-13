@@ -1,7 +1,10 @@
 import axios from 'axios'
+// 是否是开发环境
+export const isDev = process.env.NODE_ENV === "development";
+
 
 const myAxios = axios.create({
-  baseURL: 'http://localhost:8101',
+    baseURL: isDev ? "http://localhost:8101" : "https://zakidada-118511-7-1328690570.sh.run.tcloudbase.com",
   timeout: 1000000,
   withCredentials: true
 })
