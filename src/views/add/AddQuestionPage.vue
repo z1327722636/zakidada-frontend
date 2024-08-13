@@ -22,7 +22,7 @@
             {{ appVO?.appDesc }}
           </a-form-item>
           <a-form-item label="应用类型" field="appType">
-            {{ APP_TYPE_MAP[appVO?.appType] }}
+            {{ APP_TYPE_MAP[appVO?.appType as 0 | 1] }}
           </a-form-item>
         </template>
       </a-popover>
@@ -70,7 +70,10 @@
             </a-form-item>
             <a-space size="large">
               <h4 class="no-wrap">题目{{ qIndex + 1 }} 选项列表</h4>
-              <a-button size="small" @click="addQuestionOption(qIndex, question.options.length)">
+              <a-button
+                size="small"
+                @click="addQuestionOption(qIndex, question.options?.length || 0)"
+              >
                 底部添加选项
               </a-button>
             </a-space>
@@ -86,7 +89,7 @@
                     size="mini"
                     status="danger"
                     @click="deleteQuestionOption(qIndex, oIndex)"
-                    :disabled="question.options.length === 1"
+                    :disabled="question.options && question.options.length === 1"
                   >
                     删除该选项
                   </a-button>
@@ -161,7 +164,7 @@ import { getAppVoByIdUsingGet } from '@/api/appController'
 import AiGenerateQuestionDrawer from '@/views/add/components/AiGenerateQuestionDrawer.vue'
 import API from '@/api'
 import { APP_TYPE_MAP } from '@/constant/app'
-import {useLoginUserStore} from "@/store/userStore";
+import { useLoginUserStore } from '@/store/userStore'
 
 const router = useRouter()
 const props = withDefaults(defineProps<{ appId: string }>(), {
@@ -174,10 +177,10 @@ const questionContent = ref<API.QuestionContentDTO[]>([])
 const oldQuestion = ref<API.QuestionVO | undefined>(undefined)
 const initialQuestionContent = ref<API.QuestionContentDTO[]>([])
 const unsavedChangesStore = useUnsavedChangesStore()
-const loginUserStore = useLoginUserStore();
+const loginUserStore = useLoginUserStore()
 const appType = ref<any>()
 const userId = ref<number>()
-const appVO = ref<API.AppVO>()
+const appVO = ref<API.AppVO>({})
 
 // 折叠状态
 const collapseStates = ref<boolean[]>([])
@@ -191,6 +194,7 @@ const isOptionCollapseStates = ref<boolean>(false)
 const initializeCollapseStates = () => {
   collapseStates.value = questionContent.value.map(() => false)
   optionCollapseStates.value = questionContent.value.map((question) =>
+    //@ts-ignore
     question.options.map(() => false)
   )
 }
@@ -204,7 +208,7 @@ const loadData = async () => {
   }
   try {
     const res = await listQuestionVoByPageUsingPost({
-      appId: appId.value,
+      appId: appId.value as any,
       current: 1,
       pageSize: 1,
       sortField: 'createTime',
@@ -231,8 +235,8 @@ const loadAppType = async () => {
   })
   if (res.data.code === 0) {
     appType.value = res.data.data?.appType
-    userId.value= res.data.data?.userId
-    if(userId.value !== loginUserStore.loginUser.id){
+    userId.value = res.data.data?.userId
+    if (userId.value !== loginUserStore.loginUser.id) {
       router.push(`/app/detail/${appId.value}`)
     }
   } else {
@@ -245,6 +249,7 @@ const loadAppType = async () => {
     id: appId.value as any
   })
   if (appVOres.data.code === 0) {
+    //@ts-ignore
     appVO.value = appVOres.data.data
   } else {
     message.error('获取应用数据失败，' + res.data.message)
@@ -260,8 +265,8 @@ watchEffect(() => {
 onMounted(() => {
   loadData()
   unsavedChangesStore.setUnsavedChanges(false)
-  loadAppType()}
-)
+  loadAppType()
+})
 
 /**
  * 提交
@@ -281,6 +286,7 @@ const handleSubmit = async () => {
     } else {
       // 创建操作
       res = await addQuestionUsingPost({
+        //@ts-ignore
         appId: appId.value,
         questionContent: questionContent.value
       })
@@ -315,23 +321,22 @@ const onSSESuccess = (aiQuestionContent: API.QuestionContentDTO) => {
  * @param event
  */
 const onSSEStart = (event: any) => {
-  message.success("开始生成");
-};
+  message.success('开始生成')
+}
 
 /**
  * SSE 生成完毕
  * @param event
  */
 const onSSEClose = (event: any) => {
-
-  message.success("生成完毕");
-};
+  message.success('生成完毕')
+}
 
 // 添加题目
 const addQuestion = (index: number) => {
   questionContent.value.splice(index, 0, {
     title: '',
-    options: [{ key: '', value: '', result: '', score: '' }]
+    options: [{ key: '', value: '', result: '', score: 0 }]
   })
   collapseStates.value.splice(index, 0, false)
   optionCollapseStates.value.splice(index, 0, [])
@@ -346,6 +351,7 @@ const deleteQuestion = (index: number) => {
 
 // 添加选项
 const addQuestionOption = (index: number, optionIndex: number) => {
+  //@ts-ignore
   questionContent.value[index].options.splice(optionIndex, 0, {
     key: '',
     value: '',

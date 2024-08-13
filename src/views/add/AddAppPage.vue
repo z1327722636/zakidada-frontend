@@ -101,7 +101,7 @@ const loadData = async () => {
   })
   if (res.data.code === 0) {
     oldApp.value = res.data.data
-    form.value = res.data.data
+    form.value = { ...res.data.data }
     initialForm.value = JSON.parse(JSON.stringify(form.value)) // 深拷贝初始数据
     unsavedChangesStore.setUnsavedChanges(false)
   } else {

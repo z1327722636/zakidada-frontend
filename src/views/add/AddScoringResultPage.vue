@@ -2,7 +2,7 @@
   <div id="AddScoringResultPage">
     <div class="AddScoringResult">
       <h2>创建评分结果</h2>
-<!--      {{ form }}-->
+      <!--      {{ form }}-->
       <a-form
         :model="form"
         :rules="rules"
@@ -32,16 +32,16 @@
             auto-size
           />
         </a-form-item>
-        <a-form-item field="resultPicture" label="结果图标" >
-<!--          <a-input allow-clear v-model="form.resultPicture" placeholder="请输入结果图标" />-->
-          <ImageUpload biz="resultPicture"  :on-change="doChange" :value="form.resultPicture"/>
+        <a-form-item field="resultPicture" label="结果图标">
+          <!--          <a-input allow-clear v-model="form.resultPicture" placeholder="请输入结果图标" />-->
+          <ImageUpload biz="resultPicture" :on-change="doChange" :value="form.resultPicture" />
         </a-form-item>
         <a-form-item
           v-if="appType === 1"
           field="appType"
           label="结果集"
-          :help="form.resultProp && form.resultProp[0]  ? '' : '不能为空'"
-          :validate-status="form.resultProp && form.resultProp[0]  ? 'success' : 'error'"
+          :help="form.resultProp && form.resultProp[0] ? '' : '不能为空'"
+          :validate-status="form.resultProp && form.resultProp[0] ? 'success' : 'error'"
         >
           <a-input-tag
             v-model="form.resultProp"
@@ -81,7 +81,7 @@ import {
   addScoringResultUsingPost,
   editScoringResultUsingPost
 } from '@/api/scoringResultController'
-import ImageUpload from "@/components/ImageUpload.vue";
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const props = withDefaults(defineProps<{ appId: string }>(), {
   appId: () => ''
@@ -109,7 +109,7 @@ const rules = ref({
     { required: true, type: 'number', message: '评分范围不能为空', trigger: 'blur' },
     { type: 'number', minLength: 0, message: '评分范围不能为负数', trigger: 'blur' }
   ]
-})
+} as any)
 
 const initialForm = ref<API.AppAddRequest>() // 保存初始加载的数据
 const unsavedChangesStore = useUnsavedChangesStore()
@@ -120,7 +120,7 @@ const updateId = ref<any>()
 
 //获取图片url
 const doChange = (url: any) => {
-  form.value.resultPicture = url;
+  form.value.resultPicture = url
 }
 
 /**
@@ -178,7 +178,7 @@ const handleSubmit = async () => {
   }
   if (res.data.code === 0) {
     message.success('操作成功')
-    form.value={
+    form.value = {
       resultDesc: '',
       resultName: '',
       resultPicture: ''

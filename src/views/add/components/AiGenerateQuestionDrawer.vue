@@ -16,7 +16,7 @@
             {{ appVO?.appDesc }}
           </a-form-item>
           <a-form-item label="应用类型" field="appType">
-            {{ APP_TYPE_MAP[appVO?.appType] }}
+            {{ APP_TYPE_MAP[appVO?.appType as 0 | 1] }}
           </a-form-item>
           <a-form-item label="题目数量" field="questionNumber">
             <a-input-number
@@ -42,17 +42,17 @@
           <a-form-item>
             <div class="login-button">
               <a-space>
-              <a-button
-                type="primary"
-                html-type="submit"
-                :loading="isSubmitting"
-                :disabled="isSubmitting"
-              >
-                {{ isSubmitting ? '生成中...' : '生成题目' }}
-              </a-button>
-              <a-button :loading="sseSubmitting" style="width: 110px" @click="handleSSESubmit">
-                {{ sseSubmitting ? '生成中' : '实时生成' }}
-              </a-button>
+                <a-button
+                  type="primary"
+                  html-type="submit"
+                  :loading="isSubmitting"
+                  :disabled="isSubmitting"
+                >
+                  {{ isSubmitting ? '生成中...' : '生成题目' }}
+                </a-button>
+                <a-button :loading="sseSubmitting" style="width: 110px" @click="handleSSESubmit">
+                  {{ sseSubmitting ? '生成中' : '实时生成' }}
+                </a-button>
               </a-space>
             </div>
           </a-form-item>
@@ -104,7 +104,7 @@ const handleSubmit = async () => {
   isSubmitting.value = true // 开始请求前设置为true
   try {
     const res = await aiGenerateQuestionUsingPost({ ...form.value })
-    if (res.data.code === 0) {
+    if (res.data.code === 0 && res.data.data) {
       props.upQuestionDate(res.data.data)
       visible.value = false
     } else {
@@ -115,43 +115,43 @@ const handleSubmit = async () => {
   }
 }
 
-
 /**
  * 提交（实时生成）
  */
 const handleSSESubmit = async () => {
   if (!props.appId) {
-    return;
+    return
   }
-  sseSubmitting.value = true;
+  sseSubmitting.value = true
   // 创建 SSE 请求
   const eventSource = new EventSource(
-      // todo 手动填写完整的后端地址
-      "http://localhost:8101/api/question/ai_generate/sse" +
-      `?appId=${props.appId}&optionNumber=${form.value.optionNumber}&questionNumber=${form.value.questionNumber}`, { withCredentials: true }
-  );
-  let first = true;
+    // todo 手动填写完整的后端地址
+    'http://localhost:8101/api/question/ai_generate/sse' +
+      `?appId=${props.appId}&optionNumber=${form.value.optionNumber}&questionNumber=${form.value.questionNumber}`,
+    { withCredentials: true }
+  )
+  let first = true
   // 接收消息
   eventSource.onmessage = function (event) {
     if (first) {
-      props.onSSEStart?.(event);
-      handleCancel();
-      first = !first;
+      props.onSSEStart?.(event)
+      handleCancel()
+      first = !first
     }
-    props.onSSESuccess?.(JSON.parse(event.data));
-  };
+    props.onSSESuccess?.(JSON.parse(event.data))
+  }
   // 报错或连接关闭时触发
   eventSource.onerror = function (event) {
     if (event.eventPhase === EventSource.CLOSED) {
-      console.log("关闭连接");
-      props.onSSEClose?.(event);
-      eventSource.close();
+      console.log('关闭连接')
+      props.onSSEClose?.(event)
+      eventSource.close()
     } else {
-      eventSource.close();
+      eventSource.close()
     }
-  };
-  sseSubmitting.value = false;
-};
+  }
+  sseSubmitting.value = false
+}
 </script>
 
 <style scoped>
