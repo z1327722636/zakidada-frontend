@@ -3,7 +3,7 @@
     <a-layout style="min-height: 100vh">
       <a-layout-header class="header">
         <a-space>
-          <img src="../assets/logo.png" class="logo" />
+          <img src="../assets/logo.png" class="logo" alt="" />
           <div>zakidada AI 答题应用平台</div>
         </a-space>
       </a-layout-header>
@@ -20,7 +20,8 @@
 <style scoped>
 #userLayout {
   text-align: center;
-  background: url("https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png") 0% 0% / 100% 100%;
+  background: url('https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png') 0 0 / 100%
+    100%;
 }
 
 #userLayout .logo {

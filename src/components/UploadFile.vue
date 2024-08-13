@@ -1,59 +1,60 @@
 <template>
-  <div class="image-upload-container">
-    <input
-      type="file"
-      ref="fileInput"
-      @change="handleFileChange"
-      :accept="accept"
-      :multiple="multiple"
-      hidden
-    />
-    <div
-      class="upload-area"
-      :class="{ 'upload-area-dragover': isDragOver }"
-      @click="triggerFileSelect"
-      @drop.prevent="handleDrop"
-      @dragover.prevent="handleDragOver"
-      @dragenter.prevent="handleDragEnter"
-      @dragleave.prevent="handleDragLeave"
-    >
-      <div class="upload-icon" >+</div>
-      <img
-        v-if="(!multiple && previewUrls.length > 0)"
-        :src="previewUrls[previewUrls.length - 1].url"
-        alt="上传图片的预览"
-        class="preview-image"
+  <div id="upload">
+    <div class="image-upload-container">
+      <input
+        type="file"
+        ref="fileInput"
+        @change="handleFileChange"
+        :accept="accept"
+        :multiple="multiple"
+        hidden
       />
-    </div>
-    <div class="description" v-if="previewUrls.length === 0 || multiple">
-      <span v-if="!isDragOver">点击或者拖拽上传 {{ multiple ? '多个' : '一个' }}</span>
-      <span v-else> 释放即可上传</span>
-    </div>
-    <div v-if="showError" class="error-popup">
-      <span>{{ errorMessage }}</span>
-      <button @click="closeErrorPopup">×</button>
-    </div>
-  </div>
-  <div v-if="showPreview && previewUrls.length > 0" class="preview-list">
-    <div class="preview-item" v-for="(file, index) in previewUrls" :key="index">
-      <img :src="file.url" alt="预览图片" class="preview-image" />
-      <a :href="file.url" target="_blank">{{ file.name }}</a>
-      <div class="upload-progress" v-if="file.success === null">
-        <div class="progress-bar" :style="{ width: file.progress + '%' }"></div>
+      <div
+        class="upload-area"
+        :class="{ 'upload-area-dragover': isDragOver }"
+        @click="triggerFileSelect"
+        @drop.prevent="handleDrop"
+        @dragover.prevent="handleDragOver"
+        @dragenter.prevent="handleDragEnter"
+        @dragleave.prevent="handleDragLeave"
+      >
+        <div class="upload-icon">+</div>
+        <img
+          v-if="!multiple && previewUrls.length > 0"
+          :src="previewUrls[previewUrls.length - 1].url"
+          alt="上传图片的预览"
+          class="preview-image"
+        />
       </div>
-      <span v-if="file.success === true && file.progress === 100" class="success-icon">✔️</span>
-      <button v-if="file.success === null" class="error-icon" @click="cancel(index)">❌</button>
-      <button v-if="file.success === false" class="again-icon" @click="uploadAgain(index)">
-        失败↺
-      </button>
-      <button @click="removeFile(index)">🗑️</button>
+      <div class="description" v-if="previewUrls.length === 0 || multiple">
+        <span v-if="!isDragOver">点击或者拖拽上传 {{ multiple ? '多个' : '一个' }}</span>
+        <span v-else> 释放即可上传</span>
+      </div>
+      <div v-if="showError" class="error-popup">
+        <span>{{ errorMessage }}</span>
+        <button @click="closeErrorPopup">×</button>
+      </div>
+    </div>
+    <div v-if="showPreview && previewUrls.length > 0" class="preview-list">
+      <div class="preview-item" v-for="(file, index) in previewUrls" :key="index">
+        <img :src="file.url" alt="预览图片" class="preview-image" />
+        <a :href="file.url" target="_blank">{{ file.name }}</a>
+        <div class="upload-progress" v-if="file.success === null">
+          <div class="progress-bar" :style="{ width: file.progress + '%' }"></div>
+        </div>
+        <span v-if="file.success === true && file.progress === 100" class="success-icon">✔️</span>
+        <button v-if="file.success === null" class="error-icon" @click="cancel(index)">❌</button>
+        <button v-if="file.success === false" class="again-icon" @click="uploadAgain(index)">
+          失败↺
+        </button>
+        <button @click="removeFile(index)">🗑️</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineProps, ref, watch, withDefaults } from 'vue'
-import {Message} from "@arco-design/web-vue";
 
 const props = withDefaults(
   defineProps<{
@@ -65,14 +66,16 @@ const props = withDefaults(
     uploadFunction: Function
     uploadUrl: string
     biz: string
-    onChange?: (fileList: { url: string; name: string; progress: number; success?: boolean; file: File }[]) => void;// 文件上传成功后的回调函数
+    onChange?: (
+      fileList: { url: string; name: string; progress: number; success?: boolean; file: File }[]
+    ) => void // 文件上传成功后的回调函数
   }>(),
   {
-    multiple: true,// 是否支持多文件上传
-    accept: 'image/*',// 支持的文件类型
-    showPreview: true,// 是否显示预览
-    maxSize: 1 * 1024 * 1024,
-    allowedTypes: ['image/png', 'image/jpeg', 'image/jpg', "image/svg", "image/webp"]
+    multiple: true, // 是否支持多文件上传
+    accept: 'image/*', // 支持的文件类型
+    showPreview: true, // 是否显示预览
+    maxSize: 1024 * 1024,
+    allowedTypes: () => ['image/png', 'image/jpeg', 'image/jpg', 'image/svg', 'image/webp'] // 使用函数返回数组
   }
 )
 
@@ -137,7 +140,7 @@ const validateAndPreview = async (file: File) => {
     return
   }
   const url = URL.createObjectURL(file)
-  const previewFile = { url, name: file.name, progress: 0, success: null, file }
+  const previewFile = { url, name: file.name, progress: 0, success: false, file }
   previewUrls.value.push(previewFile)
   errorMessage.value = null
   const onProgress = (progress: number) => {
@@ -179,7 +182,6 @@ const uploadAgain = async (index: number) => {
   await validateAndPreview(fileData.file)
 }
 
-
 const cancel = (index: number) => {
   cancelUpload.value && cancelUpload.value()
   previewUrls.value[index].progress = 0
@@ -205,7 +207,7 @@ const upload = props.uploadFunction
             } else {
               onFinish({ success: false, message: res.data.message })
             }
-           })
+          })
           .catch((error) => {
             onFinish({ success: false, message: error.message || '上传失败' })
           })
@@ -216,9 +218,9 @@ const upload = props.uploadFunction
     }
   : async (file: File, onProgress: (progress: number) => void, onFinish: (resp: any) => void) => {
       const xhr = new XMLHttpRequest()
-      xhr.open('POST', props.uploadUrl ) // 使用传入的 uploadUrl
+      xhr.open('POST', props.uploadUrl) // 使用传入的 uploadUrl
       // 设置 withCredentials 为 true 以携带 Cookie
-      xhr.withCredentials = true;
+      xhr.withCredentials = true
 
       xhr.upload.onprogress = (event: ProgressEvent) => {
         if (event.lengthComputable) {
@@ -229,10 +231,10 @@ const upload = props.uploadFunction
 
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
-         const res = JSON.parse(xhr.responseText)
+          const res = JSON.parse(xhr.responseText)
           console.log(res)
           if (res.code === 0 && res.data) {
-            onFinish({ success: true, data: res})
+            onFinish({ success: true, data: res })
           } else {
             onFinish({ success: false, message: res.message })
           }

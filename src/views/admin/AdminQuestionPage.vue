@@ -33,7 +33,7 @@
             <strong>{{ question.title }}</strong>
           </span>
           <template #content>
-            <p v-for="option in question.options">
+            <p v-for="option in question.options" :key="option.key">
               {{ option.key }}、{{ option.value }} | {{ displayOption(option) }}
             </p>
           </template>

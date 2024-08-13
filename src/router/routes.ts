@@ -139,7 +139,7 @@ export const routes: Array<RouteRecordRaw> = [
         path: '/admin',
         name: '管理', // 管理
         redirect: '/admin/user',
-        component: defineAsyncComponent(() => import('@/views/admin/Admin.vue')),
+        component: defineAsyncComponent(() => import('@/views/admin/AdminPage.vue')),
         meta: {
           access: ACCESS_ENUM.ADMIN // 管理员权限
         },
@@ -171,7 +171,9 @@ export const routes: Array<RouteRecordRaw> = [
           {
             path: '/admin/scoring_result',
             name: '评分管理',
-            component: defineAsyncComponent(() => import('@/views/admin/AdminScoringResultPage.vue')),
+            component: defineAsyncComponent(
+              () => import('@/views/admin/AdminScoringResultPage.vue')
+            ),
             meta: {
               access: ACCESS_ENUM.ADMIN
             }
@@ -185,7 +187,7 @@ export const routes: Array<RouteRecordRaw> = [
             }
           }
         ]
-      },
+      }
     ]
   },
   {

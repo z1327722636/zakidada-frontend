@@ -8,11 +8,11 @@
       <div class="user-info">
         <h2 class="username">{{ user.nickname ?? '匿名' }}</h2>
         <!--        <p class="user-level">等级：{{ user.level }}</p>-->
-        <p class="user-role" >{{user.role}}</p>
-        <UpdataUser  :user="user" :upUserData="onchangeData">编辑个人信息</UpdataUser>
+        <p class="user-role">{{ user.role }}</p>
+        <UpdataUser :user="user" :upUserData="onchangeData">编辑个人信息</UpdataUser>
       </div>
     </div>
-<!--    {{user}}-->
+    <!--    {{user}}-->
     <div class="profile-details">
       <h3>基本信息</h3>
       <a-descriptions style="margin-top: 20px" :data="data" size="large" :column="1" />
@@ -21,9 +21,9 @@
 </template>
 
 <script setup>
-import {computed, ref, watchEffect} from 'vue'
+import { computed, ref } from 'vue'
 import { useLoginUserStore } from '@/store/userStore'
-import UpdataUser from "@/views/My/components/UpdataUser.vue";
+import UpdataUser from '@/views/My/components/UpdataUser.vue'
 
 const loginUserStore = useLoginUserStore()
 
@@ -35,34 +35,34 @@ const user = ref({
   userProfile: loginUserStore.loginUser.userProfile,
   role: loginUserStore.loginUser.userRole
 })
-const data = computed(()=>{return [
-  {
-    label: '用户昵称',
-    value: user.value.nickname
-  },
-  {
-    label: '用户ID',
-    value: user.value.userId
-  },
-  {
-    label: '用户账号',
-    value: user.value.userAccount
-  },
-  {
-    label: '性别',
-    value: '隐藏'
-  },
-  {
-    label: '个人简介',
-    value: user.value.userProfile ?? '这个人很懒，什么都没有留下'
-  }
-]})
+const data = computed(() => {
+  return [
+    {
+      label: '用户昵称',
+      value: user.value.nickname
+    },
+    {
+      label: '用户ID',
+      value: user.value.userId
+    },
+    {
+      label: '用户账号',
+      value: user.value.userAccount
+    },
+    {
+      label: '性别',
+      value: '隐藏'
+    },
+    {
+      label: '个人简介',
+      value: user.value.userProfile ?? '这个人很懒，什么都没有留下'
+    }
+  ]
+})
 
 const onchangeData = (updatedUser) => {
-  user.value = {...user.value, ...updatedUser}
+  user.value = { ...user.value, ...updatedUser }
 }
-
-
 </script>
 
 <style scoped>
@@ -108,7 +108,7 @@ const onchangeData = (updatedUser) => {
   color: #888;
 }
 
-.user-role{
+.user-role {
   color: #f39c12;
 }
 

@@ -1,7 +1,6 @@
-
 <template>
   <div>{{ link }}</div>
-  <img :src="codeImg" />
+  <img :src="codeImg" alt="分享二维码" />
 </template>
 
 <script setup lang="ts">
@@ -15,11 +14,11 @@ const codeImg = ref()
 
 // With promises
 QRCode.toDataURL(link)
-    .then((url) => {
-      console.log(url)
-      codeImg.value = url
-    })
-    .catch((err) => {
-      console.error(err)
-    })
+  .then((url) => {
+    console.log(url)
+    codeImg.value = url
+  })
+  .catch((err) => {
+    console.error(err)
+  })
 </script>

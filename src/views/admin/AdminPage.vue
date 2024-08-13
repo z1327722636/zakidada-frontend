@@ -1,10 +1,16 @@
 <template>
-  <div id="admin">
+  <div id="adminPage">
     <div class="menu-admin">
-      <a-menu mode="pop" :selected-keys="[selectedKeys]" @menu-item-click="doMenuItemClick" showCollapseButton default-collapsed>
+      <a-menu
+        mode="pop"
+        :selected-keys="[selectedKeys]"
+        @menu-item-click="doMenuItemClick"
+        showCollapseButton
+        default-collapsed
+      >
         <a-menu-item v-for="item in currentChildrenRoutes" :key="item.path" :path="item.path">
           <template #icon>
-            <span> {{ item.name.charAt(0) }}</span>
+            <span> {{ item.name?.charAt(0) }}</span>
           </template>
           {{ item.name }}
         </a-menu-item>
@@ -15,43 +21,42 @@
 </template>
 
 <script setup lang="ts">
-import { useLoginUserStore } from '@/store/userStore';
-import { routes } from '@/router/routes';
-import { useRouter, useRoute } from 'vue-router';
-import { ref, computed, onMounted } from 'vue';
+import { routes } from '@/router/routes'
+import { useRoute, useRouter } from 'vue-router'
+import { computed, onMounted, ref } from 'vue'
 
-const router = useRouter();
-const route = useRoute();
-const selectedKeys = ref(route.path); // 初始化为当前路径
-const loginUserStore = useLoginUserStore();
+const router = useRouter()
+const route = useRoute()
+const selectedKeys = ref(route.path) // 初始化为当前路径
 
 // 动态计算当前路由的子路由数组
 const currentChildrenRoutes = computed(() => {
   // 使用传递的父路由路径或默认为 `/`
-  const parentRoutePath = '/admin';
-  const parentRoute =(routes.find(r => r.path === '/').children).find(r => r.path === parentRoutePath);
-  return parentRoute ? parentRoute.children || [] : [];
-});
+  const parentRoutePath = '/admin'
+  const parentRoute = routes
+    .find((r) => r.path === '/')
+    .children.find((r) => r.path === parentRoutePath)
+  return parentRoute ? parentRoute.children || [] : []
+})
 
 // 路由跳转后，更新选中的菜单项
 router.afterEach((to) => {
-  updateSelectedKeys(to.path);
-});
+  updateSelectedKeys(to.path)
+})
 
 const updateSelectedKeys = (path) => {
-  selectedKeys.value = path;
-};
+  selectedKeys.value = path
+}
 
 // 初始化选中项
 onMounted(() => {
-  updateSelectedKeys(route.path);
-});
+  updateSelectedKeys(route.path)
+})
 
-const doMenuItemClick = (key, e) => {
-  router.push(key);
-};
+const doMenuItemClick = (key) => {
+  router.push(key)
+}
 </script>
-
 
 <style scoped>
 #admin {
@@ -98,7 +103,9 @@ const doMenuItemClick = (key, e) => {
   height: 48px;
   background-color: inherit;
   border-radius: 50%;
-  box-shadow: -4px 0 2px var(--color-bg-2), 0 0 1px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    -4px 0 2px var(--color-bg-2),
+    0 0 1px rgba(0, 0, 0, 0.3);
   transform: translateX(50%);
 }
 
