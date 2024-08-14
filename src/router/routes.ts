@@ -7,7 +7,7 @@ export const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'main',
     redirect: '/home', // 主页
-    component: defineAsyncComponent(() => import('../Layouts/BasicLayout.vue')),
+    component: defineAsyncComponent(() => import('@/Layouts/BasicLayout.vue')),
     children: [
       {
         path: '/home',
@@ -55,14 +55,14 @@ export const routes: Array<RouteRecordRaw> = [
           hideInMenu: true
         }
       },
-      {
-        path: '/Demo',
-        name: 'Demo', // 关于
-        component: defineAsyncComponent(() => import('@/views/demoView.vue')),
-        meta: {
-          access: ACCESS_ENUM.USER // 用户权限
-        }
-      },
+      // {
+      //   path: '/Demo',
+      //   name: 'Demo', // 关于
+      //   component: defineAsyncComponent(() => import('@/views/demoView.vue')),
+      //   meta: {
+      //     access: ACCESS_ENUM.USER // 用户权限
+      //   }
+      // },
       {
         path: '/answer/do/:appId',
         name: '答题',
@@ -120,7 +120,7 @@ export const routes: Array<RouteRecordRaw> = [
           {
             path: '/my/detail',
             name: '个人资料',
-            component: defineAsyncComponent(() => import('@/views/My/MyDetailPage.vue')),
+            component: defineAsyncComponent(() => import('../views/My/MyDetailPage.vue')),
             meta: {
               access: ACCESS_ENUM.USER // 用户权限
             }
