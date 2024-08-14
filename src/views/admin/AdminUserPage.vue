@@ -21,33 +21,32 @@
       </a-form-item>
     </a-form>
 
-      <a-table
-        :columns="columns"
-        :data="dataList"
-        :pagination="{
-          showTotal: true,
-          pageSize: searchParams.pageSize,
-          current: searchParams.current,
-          total: totalPage,
-          onChange: onPageChange
-        }"
-      >
-        <template #userAvatar="{ record }">
-          <a-image width="64" :src="record.userAvatar" />
-        </template>
-        <template #createTime="{ record }">
-          {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
-        </template>
-        <template #updateTime="{ record }">
-          {{ dayjs(record.updateTime).format('YYYY-MM-DD HH:mm:ss') }}
-        </template>
-        <template #optional="{ record }">
-          <a-space>
-            <a-button status="danger" @click="doDelete(record)">删除</a-button>
-          </a-space>
-        </template>
-      </a-table>
-
+    <a-table
+      :columns="columns"
+      :data="dataList"
+      @page-change="onPageChange"
+      :pagination="{
+        showTotal: true,
+        pageSize: searchParams.pageSize,
+        current: searchParams.current,
+        total: totalPage
+      }"
+    >
+      <template #userAvatar="{ record }">
+        <a-image width="64" :src="record.userAvatar" />
+      </template>
+      <template #createTime="{ record }">
+        {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
+      </template>
+      <template #updateTime="{ record }">
+        {{ dayjs(record.updateTime).format('YYYY-MM-DD HH:mm:ss') }}
+      </template>
+      <template #optional="{ record }">
+        <a-space>
+          <a-button status="danger" @click="doDelete(record)">删除</a-button>
+        </a-space>
+      </template>
+    </a-table>
   </div>
 </template>
 
@@ -67,8 +66,8 @@ const initSearchParams = {
 }
 const searchParams = ref<API.UserQueryRequest>({
   ...initSearchParams,
-  sortField: "updateTime",
-  sortOrder: "descend",
+  sortField: 'updateTime',
+  sortOrder: 'descend'
 })
 const formSearchParams = ref<API.UserQueryRequest>({})
 
@@ -148,21 +147,21 @@ const columns = [
     dataIndex: 'id',
     ellipsis: true,
     tooltip: true,
-    width: 50,
+    width: 50
   },
   {
     title: '账号',
     dataIndex: 'userAccount',
     ellipsis: true,
     tooltip: true,
-    width: 100,
+    width: 100
   },
   {
     title: '用户名',
     dataIndex: 'userName',
     ellipsis: true,
     tooltip: true,
-    width: 100,
+    width: 100
   },
   {
     title: '用户头像',
@@ -170,21 +169,21 @@ const columns = [
     slotName: 'userAvatar',
     ellipsis: true,
     tooltip: true,
-    width: 150,
+    width: 150
   },
   {
     title: '用户简介',
     dataIndex: 'userProfile',
     ellipsis: true,
     tooltip: true,
-    width: 200,
+    width: 200
   },
   {
     title: '权限',
     dataIndex: 'userRole',
     ellipsis: true,
     tooltip: true,
-    width: 100,
+    width: 100
   },
   {
     title: '创建时间',
@@ -192,7 +191,7 @@ const columns = [
     slotName: 'createTime',
     ellipsis: true,
     tooltip: true,
-    width: 150,
+    width: 150
   },
   {
     title: '更新时间',
@@ -200,14 +199,14 @@ const columns = [
     slotName: 'updateTime',
     ellipsis: true,
     tooltip: true,
-    width: 150,
+    width: 150
   },
   {
     title: '操作',
     slotName: 'optional',
     ellipsis: true,
     tooltip: true,
-    width: 150,
+    width: 150
   }
 ]
 </script>

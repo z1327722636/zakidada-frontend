@@ -9,7 +9,6 @@
     <Upload
       biz="user_avatar"
       upload-url="http://localhost:8101/api/file/upload"
-      upload-function=""
       :on-change="doChange"
     />
     <ImageUpload biz="user_avatar" :on-change="doChange" />

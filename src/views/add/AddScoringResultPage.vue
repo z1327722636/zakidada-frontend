@@ -59,7 +59,10 @@
         </a-form-item>
         <a-form-item>
           <div class="login-button">
-            <a-button type="primary" html-type="submit"> 提交 </a-button>
+            <a-space size="large">
+              <a-button type="primary" html-type="submit"> 提交 </a-button>
+              <a-button @click="clearForm" v-show="hasContent()"> 取消 </a-button>
+            </a-space>
           </div>
         </a-form-item>
       </a-form>
@@ -181,7 +184,7 @@ const handleSubmit = async () => {
     form.value = {
       resultDesc: '',
       resultName: '',
-      resultPicture: ''
+      resultPicture: ' '
     }
     initialForm.value = JSON.parse(JSON.stringify(form.value)) // 深拷贝当前数据为初始数据
   } else {
@@ -192,7 +195,29 @@ const handleSubmit = async () => {
     updateId.value = undefined
   }
 }
+/**
+ * 清除表单内容
+ */
+const clearForm = async () => {
+  form.value = {
+    resultDesc: '',
+    resultName: '',
+    resultPicture: ''
+  }
+  if (tableRef.value) {
+    await tableRef.value.loadData()
+    updateId.value = undefined
+  }
+}
 
+/**
+ * 判断表单是否有内容
+ */
+const hasContent = () => {
+  return (
+    form.value.resultDesc !== '' || form.value.resultName !== '' || form.value.resultPicture !== ''
+  )
+}
 // 处理浏览器的返回和刷新
 const handleBeforeUnload = (event: BeforeUnloadEvent) => {
   const hasUnsavedChanges = JSON.stringify(form.value) !== JSON.stringify(initialForm.value)

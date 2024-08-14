@@ -12,10 +12,10 @@
       <a-input v-model="formSearchParams.resultDesc" placeholder="请输入结果描述" allow-clear />
     </a-form-item>
     <a-form-item field="appId" label="应用 id">
-      <a-input v-model="formSearchParams.appId" placeholder="请输入应用 id" allow-clear />
+      <a-input v-model="formSearchParams.appId as any" placeholder="请输入应用 id" allow-clear />
     </a-form-item>
     <a-form-item field="userId" label="用户 id">
-      <a-input v-model="formSearchParams.userId" placeholder="请输入用户 id" allow-clear />
+      <a-input v-model="formSearchParams.userId as any" placeholder="请输入用户 id" allow-clear />
     </a-form-item>
     <a-form-item>
       <a-button type="primary" html-type="submit" style="width: 100px"> 搜索 </a-button>
@@ -36,10 +36,10 @@
       <a-image width="64" :src="record.resultPicture" />
     </template>
     <template #appType="{ record }">
-      {{ APP_TYPE_MAP[record.appType] }}
+      {{ APP_TYPE_MAP[record.appType as 0 | 1] }}
     </template>
     <template #scoringStrategy="{ record }">
-      {{ APP_SCORING_STRATEGY_MAP[record.scoringStrategy] }}
+      {{ APP_SCORING_STRATEGY_MAP[record.scoringStrategy as 0 | 1] }}
     </template>
     <template #createTime="{ record }">
       {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}

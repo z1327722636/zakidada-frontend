@@ -10,7 +10,7 @@
       >
         <a-menu-item v-for="item in currentChildrenRoutes" :key="item.path" :path="item.path">
           <template #icon>
-            <span> {{ item.name?.charAt(0) }}</span>
+            <span> {{ (item.name as any)?.charAt(0) }}</span>
           </template>
           {{ item.name }}
         </a-menu-item>
@@ -33,9 +33,9 @@ const selectedKeys = ref(route.path) // 初始化为当前路径
 const currentChildrenRoutes = computed(() => {
   // 使用传递的父路由路径或默认为 `/`
   const parentRoutePath = '/admin'
-  const parentRoute = routes
-    .find((r) => r.path === '/')
-    .children.find((r) => r.path === parentRoutePath)
+  const parentRoute = (routes as any)
+    .find((r: any) => r.path === '/')
+    .children.find((r: any) => r.path === parentRoutePath)
   return parentRoute ? parentRoute.children || [] : []
 })
 
@@ -44,7 +44,7 @@ router.afterEach((to) => {
   updateSelectedKeys(to.path)
 })
 
-const updateSelectedKeys = (path) => {
+const updateSelectedKeys = (path: any) => {
   selectedKeys.value = path
 }
 
@@ -53,13 +53,13 @@ onMounted(() => {
   updateSelectedKeys(route.path)
 })
 
-const doMenuItemClick = (key) => {
+const doMenuItemClick = (key: any) => {
   router.push(key)
 }
 </script>
 
 <style scoped>
-#admin {
+#adminPage {
   display: flex; /* 使用 flex 布局 */
   box-sizing: border-box;
 }

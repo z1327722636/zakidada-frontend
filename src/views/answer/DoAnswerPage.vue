@@ -47,7 +47,7 @@ import { useRouter } from 'vue-router'
 import { listQuestionVoByPageUsingPost } from '@/api/questionController'
 import message from '@arco-design/web-vue/es/message'
 import { getAppVoByIdUsingGet } from '@/api/appController'
-import {addUserAnswerUsingPost, generateUserAnswerIdUsingGet} from '@/api/userAnswerController'
+import { addUserAnswerUsingPost, generateUserAnswerIdUsingGet } from '@/api/userAnswerController'
 
 interface Props {
   appId: string
@@ -84,7 +84,6 @@ const questionOptions = computed(() => {
 const currentAnswer = ref<string>()
 // 回答列表
 const answerList = reactive<string[]>([])
-
 
 /**
  * 加载数据
@@ -131,6 +130,7 @@ watchEffect(() => {
 /**
  * 选中选项后，保存选项记录
  * @param value
+ * @param e
  */
 const doRadioChange = (value: string) => {
   answerList[current.value - 1] = value
@@ -169,13 +169,11 @@ const doSubmit = async () => {
   })
 
   if (res.data.code === 0 && res.data.data) {
-    router.push(`/answer/result/${res.data.data}`)
+    await router.push(`/answer/result/${res.data.data}`)
     loading.value = false
-
   } else {
     message.error('提交答案失败，' + res.data.message)
     loading.value = false
   }
-
 }
 </script>

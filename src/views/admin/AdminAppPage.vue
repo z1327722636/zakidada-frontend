@@ -22,25 +22,25 @@
     <a-table
       :columns="columns"
       :data="dataList"
+      @page-change="onPageChange"
       :pagination="{
         showTotal: true,
         pageSize: searchParams.pageSize,
         current: searchParams.current,
-        total: totalPage,
-        onChange: onPageChange
+        total: totalPage
       }"
     >
       <template #appIcon="{ record }">
         <a-image width="64" :src="record.appIcon" />
       </template>
       <template #appType="{ record }">
-        {{ APP_TYPE_MAP[record.appType] }}
+        {{ APP_TYPE_MAP[record.appType as 0 | 1] }}
       </template>
       <template #scoringStrategy="{ record }">
-        {{ APP_SCORING_STRATEGY_MAP[record.scoringStrategy] }}
+        {{ APP_SCORING_STRATEGY_MAP[record.scoringStrategy as 0 | 1] }}
       </template>
       <template #reviewStatus="{ record }">
-        {{ REVIEW_STATUS_MAP[record.reviewStatus] }}
+        {{ REVIEW_STATUS_MAP[record.reviewStatus as 0 | 1 | 2] }}
       </template>
       <template #reviewTime="{ record }">
         {{ record.reviewTime && dayjs(record.reviewTime).format('YYYY-MM-DD HH:mm:ss') }}
@@ -77,11 +77,19 @@
 <script setup lang="ts">
 import { onMounted, ref, watchEffect } from 'vue'
 import API from '@/api'
-import { deleteUserUsingPost, listUserByPageUsingPost } from '@/api/userController'
 import message from '@arco-design/web-vue/es/message'
 import { dayjs } from '@arco-design/web-vue/es/_utils/date'
-import {deleteAppUsingPost, doAppReviewUsingPost, listAppByPageUsingPost} from '@/api/appController'
-import {APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP, REVIEW_STATUS_ENUM, REVIEW_STATUS_MAP} from "../../constant/app";
+import {
+  deleteAppUsingPost,
+  doAppReviewUsingPost,
+  listAppByPageUsingPost
+} from '@/api/appController'
+import {
+  APP_SCORING_STRATEGY_MAP,
+  APP_TYPE_MAP,
+  REVIEW_STATUS_ENUM,
+  REVIEW_STATUS_MAP
+} from '@/constant/app'
 
 // 定义数据
 const dataList = ref<API.App[]>([])
@@ -93,8 +101,8 @@ const initSearchParams = {
 }
 const searchParams = ref<API.AppQueryRequest>({
   ...initSearchParams,
-  sortField: "updateTime",
-  sortOrder: "descend",
+  sortField: 'updateTime',
+  sortOrder: 'descend'
 })
 const formSearchParams = ref<API.AppQueryRequest>({})
 
@@ -172,26 +180,22 @@ const doDelete = async (record: API.App) => {
  * @param reviewStatus
  * @param reviewMessage
  */
-const doReview = async (
-    record: API.App,
-    reviewStatus: number,
-    reviewMessage?: string
-) => {
+const doReview = async (record: API.App, reviewStatus: number, reviewMessage?: string) => {
   if (!record.id) {
-    return;
+    return
   }
 
   const res = await doAppReviewUsingPost({
     id: record.id,
     reviewStatus,
-    reviewMessage,
-  });
+    reviewMessage
+  })
   if (res.data.code === 0) {
-    loadData();
+    loadData()
   } else {
-    message.error("审核失败，" + res.data.message);
+    message.error('审核失败，' + res.data.message)
   }
-};
+}
 /**
  *监听数据变化更新渲染
  */
@@ -296,12 +300,7 @@ const columns = [
     slotName: 'optional',
     width: '250'
   }
-]
+] as any[]
 </script>
 
-<style scoped>
-/* 样式优化 */
-#AdminUserPage {
-  width: auto;
-}
-</style>
+<style scoped></style>

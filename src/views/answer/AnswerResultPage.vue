@@ -44,9 +44,8 @@ import { defineProps, ref, watchEffect, withDefaults } from 'vue'
 import API from '@/api'
 import { getUserAnswerVoByIdUsingGet } from '@/api/userAnswerController'
 import message from '@arco-design/web-vue/es/message'
-import { useRouter } from 'vue-router'
 import { dayjs } from '@arco-design/web-vue/es/_utils/date'
-import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from '../../constant/app'
+import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from '@/constant/app'
 import ShareModal from '@/components/ShareModal.vue'
 
 interface Props {
@@ -58,8 +57,6 @@ const props = withDefaults(defineProps<Props>(), {
     return ''
   }
 })
-
-const router = useRouter()
 
 const data = ref<API.UserAnswerVO>({})
 
@@ -101,9 +98,6 @@ const doShare = (e: Event) => {
 </script>
 
 <style scoped>
-#answerResultPage {
-}
-
 #answerResultPage .content-wrapper > * {
   margin-bottom: 24px;
 }

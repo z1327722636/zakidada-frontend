@@ -63,8 +63,8 @@ const props = withDefaults(
     showPreview?: boolean
     maxSize?: number
     allowedTypes?: string[]
-    uploadFunction: Function
-    uploadUrl: string
+    uploadFunction?: Function
+    uploadUrl?: string
     biz: string
     onChange?: (
       fileList: { url: string; name: string; progress: number; success?: boolean; file: File }[]
@@ -173,7 +173,7 @@ const uploadAgain = async (index: number) => {
 
   // 重置进度和成功状态
   fileData.progress = 0
-  fileData.success = null
+  fileData.success = false
 
   // 移除预览图的 URL 对象
   URL.revokeObjectURL(fileData.url)
@@ -192,6 +192,7 @@ const cancel = (index: number) => {
 const upload = props.uploadFunction
   ? async (file: File, onProgress: (progress: number) => void, onFinish: (resp: any) => void) => {
       try {
+        //@ts-ignore
         await props
           .uploadFunction({ biz: props.biz }, {}, file, {
             onUploadProgress: (event: ProgressEvent) => {
@@ -201,24 +202,24 @@ const upload = props.uploadFunction
               }
             }
           })
-          .then((res) => {
+          .then((res: any) => {
             if (res.data.code === 0 && res.data.data) {
               onFinish({ success: true, data: res.data })
             } else {
               onFinish({ success: false, message: res.data.message })
             }
           })
-          .catch((error) => {
+          .catch((error: any) => {
             onFinish({ success: false, message: error.message || '上传失败' })
           })
-      } catch (error) {
+      } catch (error: any) {
         onFinish({ success: false, message: error.message || '上传失败' })
       }
       return () => {}
     }
   : async (file: File, onProgress: (progress: number) => void, onFinish: (resp: any) => void) => {
       const xhr = new XMLHttpRequest()
-      xhr.open('POST', props.uploadUrl) // 使用传入的 uploadUrl
+      xhr.open('POST', props.uploadUrl ?? '') // 使用传入的 uploadUrl
       // 设置 withCredentials 为 true 以携带 Cookie
       xhr.withCredentials = true
 

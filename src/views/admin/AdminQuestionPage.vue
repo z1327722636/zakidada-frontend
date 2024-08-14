@@ -6,10 +6,10 @@
     @submit="doSearch"
   >
     <a-form-item field="appId" label="应用 id" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
-      <a-input v-model="formSearchParams.appId" placeholder="请输入应用 id" allow-clear />
+      <a-input v-model="formSearchParams.appId as any" placeholder="请输入应用 id" allow-clear />
     </a-form-item>
     <a-form-item field="userId" label="用户 id" :labelCol="{ span: 4 }" :wrapperCol="{ span: 20 }">
-      <a-input v-model="formSearchParams.userId" placeholder="请输入用户 id" allow-clear />
+      <a-input v-model="formSearchParams.userId as any" placeholder="请输入用户 id" allow-clear />
     </a-form-item>
     <a-form-item :wrapperCol="{ offset: 4, span: 20 }">
       <a-button type="primary" html-type="submit" style="width: 100px"> 搜索</a-button>
@@ -94,7 +94,7 @@ const loadData = async () => {
  * @param option
  * @returns {String}
  */
-const displayOption = (option) => {
+const displayOption = (option: any) => {
   return option.result ? `${option.result}型` : `${option.score}分`
 }
 /**
@@ -123,7 +123,7 @@ const onPageChange = (page: number) => {
  * @param content
  * @returns {Array}
  */
-const parseQuestionContent = (content) => {
+const parseQuestionContent = (content: any) => {
   try {
     return JSON.parse(content)
   } catch (error) {

@@ -5,12 +5,12 @@
     <h2>应用结果统计</h2>
     <div class="search-bar">
       <a-input-search
-          :style="{ width: '320px' }"
-          placeholder="输入 appId"
-          button-text="搜索"
-          size="large"
-          search-button
-          @search="(value) => loadAppAnswerResultCountData(value)"
+        :style="{ width: '320px' }"
+        placeholder="输入 appId"
+        button-text="搜索"
+        size="large"
+        search-button
+        @search="(value) => loadAppAnswerResultCountData(value)"
       />
     </div>
     <div style="margin-bottom: 16px" />
@@ -19,122 +19,120 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, ref, watchEffect} from "vue";
-import API from "@/api";
-import message from "@arco-design/web-vue/es/message";
+import { computed, onMounted, ref, watchEffect } from 'vue'
+import API from '@/api'
+import message from '@arco-design/web-vue/es/message'
 import {
   getAppAnswerCountUsingGet,
-  getAppAnswerResultCountUsingGet,
-} from "@/api/appStatisticController";
-import VChart from "vue-echarts";
-import "echarts";
-import {getAppVoByIdUsingGet} from "@/api/appController";
+  getAppAnswerResultCountUsingGet
+} from '@/api/appStatisticController'
+import VChart from 'vue-echarts'
+import 'echarts'
+import { getAppVoByIdUsingGet } from '@/api/appController'
 
-const appAnswerCountList = ref<API.AppAnswerCountDTO[]>([]);
-const appAnswerResultCountList = ref<API.AppAnswerResultCountDTO[]>([]);
+const appAnswerCountList = ref<API.AppAnswerCountDTO[]>([])
+const appAnswerResultCountList = ref<API.AppAnswerResultCountDTO[]>([])
 
-const appIdNameMap = ref<{ [key: string]: string }>({});
-
+const appIdNameMap = ref<{ [key: string]: string }>({})
 
 /**
  * 加载数据
  */
 const loadAppAnswerCountData = async () => {
-  const res = await getAppAnswerCountUsingGet();
+  const res = await getAppAnswerCountUsingGet()
   if (res.data.code === 0) {
-    appAnswerCountList.value = res.data.data || [];
-    const map: { [key: string]: string } = {};
-    for (const item of appAnswerCountList.value ) {
-      const appName = await AppName(item.appId);
+    appAnswerCountList.value = res.data.data || []
+    const map: { [key: string]: string } = {}
+    for (const item of appAnswerCountList.value) {
+      const appName = await AppName(item.appId as any)
       if (appName) {
-        map[item.appId] = appName;
+        map[item.appId as any] = appName
       }
     }
-    appIdNameMap.value = map;
+    appIdNameMap.value = map
   } else {
-    message.error("获取数据失败，" + res.data.message);
+    message.error('获取数据失败，' + res.data.message)
   }
-};
+}
 
 // 统计选项
 const appAnswerCountOptions = computed(() => {
   return {
     xAxis: {
-      type: "category",
+      type: 'category',
       data: appAnswerCountList.value.map((item) => item.appId),
-      name: "应用 id",
+      name: '应用 id'
     },
     yAxis: {
-      type: "value",
-      name: "用户答案数",
+      type: 'value',
+      name: '用户答案数'
     },
     tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow'
-        },
-      formatter: function (params) {
-        const appId = params[0].name;
-        const appName = appIdNameMap.value[appId] || 'Unknown';
-        return `App Name: ${appName}<br/>用户答案数: ${params[0].value}`;
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      formatter: function (params: any) {
+        const appId = params[0].name
+        const appName = appIdNameMap.value[appId] || 'Unknown'
+        return `App Name: ${appName}<br/>用户答案数: ${params[0].value}`
       }
-
     },
     series: [
       {
         data: appAnswerCountList.value.map((item) => item.answerCount),
-        type: "bar",
-      },
-    ],
-  };
-});
+        type: 'bar'
+      }
+    ]
+  }
+})
 
 /**
  * 加载数据
  */
 const loadAppAnswerResultCountData = async (appId: string) => {
   if (!appId) {
-    return;
+    return
   }
   const res = await getAppAnswerResultCountUsingGet({
-    appId: appId as any,
-  });
+    appId: appId as any
+  })
   if (res.data.code === 0) {
-    appAnswerResultCountList.value = res.data.data || [];
+    appAnswerResultCountList.value = res.data.data || []
   } else {
-    message.error("获取数据失败，" + res.data.message);
+    message.error('获取数据失败，' + res.data.message)
   }
-};
+}
 
 // 统计选项
 const appAnswerResultCountOptions = computed(() => {
   return {
     tooltip: {
-      trigger: "item",
+      trigger: 'item'
     },
     legend: {
-      orient: "vertical",
-      left: "left",
+      orient: 'vertical',
+      left: 'left'
     },
     series: [
       {
-        name: "应用答案结果分布",
-        type: "pie",
-        radius: "50%",
+        name: '应用答案结果分布',
+        type: 'pie',
+        radius: '50%',
         data: appAnswerResultCountList.value.map((item) => {
-          return { value: item.resultCount, name: item.resultName };
+          return { value: item.resultCount, name: item.resultName }
         }),
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
             shadowOffsetX: 0,
-            shadowColor: "rgba(0, 0, 0, 0.5)",
-          },
-        },
-      },
-    ],
-  };
-});
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }
+    ]
+  }
+})
 
 /**
  * 获取应用名称
@@ -144,7 +142,7 @@ const AppName = async (appId: string) => {
     id: appId as any
   })
   if (res.data.code === 0) {
-     return res.data.data?.appName
+    return res.data.data?.appName
   } else {
     message.error('获取数据失败，' + res.data.message)
   }
@@ -161,24 +159,24 @@ const AppName = async (appId: string) => {
   // }
 }
 
-onMounted(()=>{
-  loadAppAnswerCountData();
-  loadAppAnswerResultCountData("1")
+onMounted(() => {
+  loadAppAnswerCountData()
+  loadAppAnswerResultCountData('1')
 })
 
 /**
  * 参数改变时触发数据的重新加载
  */
 watchEffect(() => {
-  loadAppAnswerCountData();
-});
+  loadAppAnswerCountData()
+})
 
 /**
  * 参数改变时触发数据的重新加载
  */
 watchEffect(() => {
-  loadAppAnswerResultCountData("");
-});
+  loadAppAnswerResultCountData('')
+})
 </script>
 
 <style scoped></style>

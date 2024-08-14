@@ -23,25 +23,25 @@
       :columns="columns"
       :data="dataList"
       @row-click="doCardClick"
+      @page-change="onPageChange"
       :pagination="{
         showTotal: true,
         pageSize: searchParams.pageSize,
         current: searchParams.current,
-        total: totalPage,
-        onChange: onPageChange
+        total: totalPage
       }"
     >
       <template #appIcon="{ record }">
         <a-image width="64" :src="record.appIcon" />
       </template>
       <template #appType="{ record }">
-        {{ APP_TYPE_MAP[record.appType] }}
+        {{ APP_TYPE_MAP[record.appType as 0 | 1] }}
       </template>
       <template #scoringStrategy="{ record }">
-        {{ APP_SCORING_STRATEGY_MAP[record.scoringStrategy] }}
+        {{ APP_SCORING_STRATEGY_MAP[record.scoringStrategy as 0 | 1] }}
       </template>
       <template #reviewStatus="{ record }">
-        {{ REVIEW_STATUS_MAP[record.reviewStatus] }}
+        {{ REVIEW_STATUS_MAP[record.reviewStatus as 0 | 1 | 2] }}
       </template>
       <template #reviewTime="{ record }">
         {{ record.reviewTime && dayjs(record.reviewTime).format('YYYY-MM-DD HH:mm:ss') }}
@@ -68,7 +68,7 @@ import API from '@/api'
 import message from '@arco-design/web-vue/es/message'
 import { dayjs } from '@arco-design/web-vue/es/_utils/date'
 import { deleteAppUsingPost, listMyAppVoByPageUsingPost } from '@/api/appController'
-import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP, REVIEW_STATUS_MAP } from '../../constant/app'
+import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP, REVIEW_STATUS_MAP } from '@/constant/app'
 import { useLoginUserStore } from '@/store/userStore'
 import { useRouter } from 'vue-router'
 
@@ -90,8 +90,7 @@ const searchParams = ref<API.AppQueryRequest>({
 })
 const formSearchParams = ref<API.AppQueryRequest>({})
 
-
-const doCardClick = (record) => {
+const doCardClick = (record: any) => {
   router.push(`/app/detail/${record.id}`)
 }
 /**
@@ -260,7 +259,7 @@ const columns = [
     slotName: 'optional',
     width: '250'
   }
-]
+] as any
 </script>
 
 <style scoped>

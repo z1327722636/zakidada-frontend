@@ -3,18 +3,18 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, withDefaults, ref } from 'vue';
-import gfm from "@bytemd/plugin-gfm";
-import highlight from "@bytemd/plugin-highlight";
-import { Editor } from "@bytemd/vue-next";
+import { defineProps, ref, withDefaults } from 'vue'
+import gfm from '@bytemd/plugin-gfm'
+import highlight from '@bytemd/plugin-highlight'
+import type { Editor } from '@bytemd/vue-next'
 
 /**
  * 定义组件属性类型
  */
 interface Props {
-  value: string;
-  mode?: string;
-  handleChange: (v: string) => void;
+  value: string
+  mode?: string
+  handleChange: (v: string) => void
 }
 
 /**
@@ -24,22 +24,22 @@ const props = withDefaults(defineProps<Props>(), {
   value: '',
   mode: 'split',
   handleChange: (v: string) => {
-    console.log(v);
-  },
-});
+    console.log(v)
+  }
+})
 
-const value = ref(props.value);
+const value = ref(props.value)
 
 const plugins = [
   gfm(),
-  highlight(),
+  highlight()
   // Add more plugins here
-];
+]
 
 const handleChange = (v: string) => {
-  value.value = v;
-  props.handleChange(v);
-};
+  value.value = v
+  props.handleChange(v)
+}
 </script>
 
 <style scoped>

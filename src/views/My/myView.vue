@@ -12,7 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { useLoginUserStore } from '@/store/userStore'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, onMounted, ref } from 'vue'
 import { routes } from '@/router/routes'
@@ -20,15 +19,14 @@ import { routes } from '@/router/routes'
 const router = useRouter()
 const route = useRoute()
 const selectedKeys = ref(route.path) // 初始化为当前路径
-const loginUserStore = useLoginUserStore()
 
 // 动态计算当前路由的子路由数组
 const currentChildrenRoutes = computed(() => {
   // 使用传递的父路由路径或默认为 `/`
   const parentRoutePath = '/my'
-  const parentRoute = routes
-    .find((r) => r.path === '/')
-    .children.find((r) => r.path === parentRoutePath)
+  const parentRoute = (routes as any)
+    .find((r: any) => r.path === '/')
+    .children.find((r: any) => r.path === parentRoutePath)
   return parentRoute ? parentRoute.children || [] : []
 })
 
@@ -37,7 +35,7 @@ router.afterEach((to) => {
   updateSelectedKeys(to.path)
 })
 
-const updateSelectedKeys = (path) => {
+const updateSelectedKeys = (path: any) => {
   selectedKeys.value = path
 }
 
@@ -46,7 +44,7 @@ onMounted(() => {
   updateSelectedKeys(route.path)
 })
 
-const doMenuItemClick = (key, e) => {
+const doMenuItemClick = (key: any) => {
   router.push(key)
 }
 </script>

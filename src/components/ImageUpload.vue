@@ -11,7 +11,10 @@
             file && file.status === 'error' ? ' arco-upload-list-item-error' : ''
           }`"
         >
-          <div class="arco-upload-list-picture custom-upload-avatar" v-if="file && file.url">
+          <div
+            class="arco-upload-list-picture custom-upload-avatar"
+            v-if="file && file.url && value"
+          >
             <img :src="file.url" alt="" />
             <div class="arco-upload-list-picture-mask">
               <IconEdit />
@@ -43,7 +46,7 @@
 
 <script setup lang="ts">
 import { IconEdit, IconPlus } from '@arco-design/web-vue/es/icon'
-import { ref, withDefaults, defineProps } from 'vue'
+import { defineProps, ref, toRefs, watchEffect, withDefaults } from 'vue'
 import { uploadFileUsingPost } from '@/api/fileController'
 import { Message } from '@arco-design/web-vue'
 
@@ -63,33 +66,40 @@ const props = withDefaults(defineProps<Props>(), {
   value: () => ''
 })
 
+const { value } = toRefs(props) // 使用 toRefs 将 props 转换为 ref
 const file = ref()
-if (props.value) {
-  file.value = {
-    url: props.value,
-    percent: 100,
-    status: 'done'
+watchEffect(() => {
+  if (value.value) {
+    file.value = {
+      url: value.value,
+      percent: 100,
+      status: 'done'
+    }
   }
-}
+})
 
 // 自定义请求
 const customRequest = async (option: any) => {
   const { onError, onSuccess, fileItem } = option
-
-  const res: any = await uploadFileUsingPost({ biz: props.biz }, {}, fileItem.file)
-  if (res.data.code === 0 && res.data.data) {
-    const url = res.data.data
-    file.value = {
-      name: fileItem.name,
-      file: fileItem.file,
-      url
+  try {
+    const res: any = await uploadFileUsingPost({ biz: props.biz }, {}, fileItem.file)
+    if (res.data.code === 0 && res.data.data) {
+      const url = res.data.data
+      file.value = {
+        name: fileItem.name,
+        file: fileItem.file,
+        url
+      }
+      props.onChange?.(url)
+      onSuccess()
+      console.log(file.value)
+    } else {
+      Message.error('上传失败，' + res.data.message || '')
+      onError(new Error(res.data.message))
     }
-    props.onChange?.(url)
-    onSuccess()
-    console.log(file.value)
-  } else {
-    Message.error('上传失败，' + res.data.message || '')
-    onError(new Error(res.data.message))
+  } catch (e) {
+    Message.error('上传失败，' + e.message || '')
+    onError(new Error(e.message))
   }
 }
 </script>

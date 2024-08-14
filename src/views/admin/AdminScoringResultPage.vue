@@ -6,20 +6,20 @@
     @submit="doSearch"
   >
     <a-form-item field="resultName" label="结果名称">
-        <a-input v-model="formSearchParams.resultName" placeholder="请输入结果名称" allow-clear />
-      </a-form-item>
-      <a-form-item field="resultDesc" label="结果描述">
-        <a-input v-model="formSearchParams.resultDesc" placeholder="请输入结果描述" allow-clear />
-      </a-form-item>
-      <a-form-item field="appId" label="应用 id">
-        <a-input v-model="formSearchParams.appId" placeholder="请输入应用 id" allow-clear />
-      </a-form-item>
-      <a-form-item field="userId" label="用户 id">
-        <a-input v-model="formSearchParams.userId" placeholder="请输入用户 id" allow-clear />
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" html-type="submit" style="width: 100px"> 搜索 </a-button>
-      </a-form-item>
+      <a-input v-model="formSearchParams.resultName" placeholder="请输入结果名称" allow-clear />
+    </a-form-item>
+    <a-form-item field="resultDesc" label="结果描述">
+      <a-input v-model="formSearchParams.resultDesc" placeholder="请输入结果描述" allow-clear />
+    </a-form-item>
+    <a-form-item field="appId" label="应用 id">
+      <a-input v-model="formSearchParams.appId as any" placeholder="请输入应用 id" allow-clear />
+    </a-form-item>
+    <a-form-item field="userId" label="用户 id">
+      <a-input v-model="formSearchParams.userId as any" placeholder="请输入用户 id" allow-clear />
+    </a-form-item>
+    <a-form-item>
+      <a-button type="primary" html-type="submit" style="width: 100px"> 搜索 </a-button>
+    </a-form-item>
   </a-form>
   <a-table
     :columns="columns"
