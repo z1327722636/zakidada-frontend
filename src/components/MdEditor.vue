@@ -6,7 +6,8 @@
 import { defineProps, ref, withDefaults } from 'vue'
 import gfm from '@bytemd/plugin-gfm'
 import highlight from '@bytemd/plugin-highlight'
-import type { Editor } from '@bytemd/vue-next'
+//@ts-ignore
+import { Editor } from '@bytemd/vue-next'
 
 /**
  * 定义组件属性类型

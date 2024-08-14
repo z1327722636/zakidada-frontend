@@ -55,14 +55,14 @@ export const routes: Array<RouteRecordRaw> = [
           hideInMenu: true
         }
       },
-      // {
-      //   path: '/Demo',
-      //   name: 'Demo', // 关于
-      //   component: defineAsyncComponent(() => import('@/views/demoView.vue')),
-      //   meta: {
-      //     access: ACCESS_ENUM.USER // 用户权限
-      //   }
-      // },
+      {
+        path: '/Demo',
+        name: 'Demo', // 关于
+        component: defineAsyncComponent(() => import('@/views/demoView.vue')),
+        meta: {
+          access: ACCESS_ENUM.USER // 用户权限
+        }
+      },
       {
         path: '/answer/do/:appId',
         name: '答题',
