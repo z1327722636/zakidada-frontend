@@ -3,12 +3,12 @@
     <div class="profile-header">
       <a-avatar alt="User Avatar" class="avatar"
         ><img v-if="user.avatar" alt="avatar" :src="user.avatar" />
-        <span v-else>{{ user.nickname ?? '匿名' }}</span>
+        <span v-else>{{ user.userName ?? '匿名' }}</span>
       </a-avatar>
       <div class="user-info">
-        <h2 class="username">{{ user.nickname ?? '匿名' }}</h2>
+        <h2 class="username">{{ user.userName ?? '匿名' }}</h2>
         <!--        <p class="user-level">等级：{{ user.level }}</p>-->
-        <p class="user-role">{{ user.role }}</p>
+        <p class="user-role">{{ user.userRole }}</p>
         <UpdataUser :user="user" :upUserData="onchangeData">编辑个人信息</UpdataUser>
       </div>
     </div>
@@ -29,21 +29,21 @@ const loginUserStore = useLoginUserStore()
 
 const user = ref({
   avatar: loginUserStore.loginUser.userAvatar, // 头像的路径
-  nickname: loginUserStore.loginUser.userName,
-  userId: loginUserStore.loginUser.id,
+  userName: loginUserStore.loginUser.userName,
+  id: loginUserStore.loginUser.id,
   userAccount: loginUserStore.loginUser.userAccount,
   userProfile: loginUserStore.loginUser.userProfile,
-  role: loginUserStore.loginUser.userRole
+  userRole: loginUserStore.loginUser.userRole
 })
 const data = computed(() => {
   return [
     {
       label: '用户昵称',
-      value: user.value.nickname
+      value: user.value.userName
     },
     {
       label: '用户ID',
-      value: user.value.userId
+      value: user.value.id
     },
     {
       label: '用户账号',
@@ -103,26 +103,8 @@ const onchangeData = (updatedUser) => {
   font-weight: bold;
 }
 
-.user-level {
-  font-size: 14px;
-  color: #888;
-}
-
 .user-role {
   color: #f39c12;
-}
-
-.edit-button {
-  background-color: #3498db;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.edit-button:hover {
-  background-color: #2980b9;
 }
 
 .profile-details h3 {
