@@ -68,6 +68,7 @@ import message from '@arco-design/web-vue/es/message'
 import { APP_TYPE_MAP } from '../../../constant/app'
 import { aiGenerateQuestionUsingPost } from '@/api/questionController'
 import API from '@/api'
+import { isDev } from '@/request'
 
 const props = withDefaults(
   defineProps<{
@@ -124,9 +125,14 @@ const handleSSESubmit = async () => {
   }
   sseSubmitting.value = true
   // 创建 SSE 请求
+  const baseURL = isDev
+    ? 'http://localhost:8101'
+    : 'https://zakidada-118511-7-1328690570.sh.run.tcloudbase.com'
+
   const eventSource = new EventSource(
     // todo 手动填写完整的后端地址
-    'http://localhost:8101/api/question/ai_generate/sse' +
+    baseURL +
+      '/api/question/ai_generate/sse' +
       `?appId=${props.appId}&optionNumber=${form.value.optionNumber}&questionNumber=${form.value.questionNumber}`,
     { withCredentials: true }
   )
