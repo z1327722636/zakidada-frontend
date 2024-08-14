@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import GlobalHeader from '../components/GlobalHeader.vue'
 </script>
 
@@ -23,7 +23,6 @@ import GlobalHeader from '../components/GlobalHeader.vue'
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-
 }
 
 .layout {

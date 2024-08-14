@@ -1,3 +1,4 @@
+{ "compilerOptions": { "moduleResolution": "node", "types": ["vite/client", "vue", "vue-router"] } }
 <template>
   <div class="profile-container">
     <div class="profile-header">
@@ -20,7 +21,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useLoginUserStore } from '@/store/userStore'
 import UpdataUser from '@/views/My/components/UpdataUser.vue'
@@ -60,7 +61,7 @@ const data = computed(() => {
   ]
 })
 
-const onchangeData = (updatedUser) => {
+const onchangeData = (updatedUser: any) => {
   user.value = { ...user.value, ...updatedUser }
 }
 </script>

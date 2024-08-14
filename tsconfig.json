@@ -1,8 +1,12 @@
 {
   "files": [],
-  "noImplicitAny": false,
-  "allowJs": true,
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "declaration": true,
+    "allowJs": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
   "references": [
     {
       "path": "./tsconfig.node.json"
@@ -13,8 +17,5 @@
     {
       "path": "./tsconfig.vitest.json"
     }
-  ],
-  "compilerOptions": {
-    "types": ["node"]
-  }
+  ]
 }
