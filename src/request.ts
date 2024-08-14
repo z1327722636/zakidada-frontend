@@ -3,8 +3,10 @@ import axios from 'axios'
 export const isDev = process.env.NODE_ENV === 'development'
 
 const myAxios = axios.create({
-  // baseURL: isDev ? "http://localhost:8101" : "https://zakidada-118511-7-1328690570.sh.run.tcloudbase.com",
-  baseURL: 'https://zakidada-118511-7-1328690570.sh.run.tcloudbase.com',
+  baseURL: isDev
+    ? 'http://localhost:8101'
+    : 'https://zakidada-118511-7-1328690570.sh.run.tcloudbase.com',
+  // baseURL: 'https://zakidada-118511-7-1328690570.sh.run.tcloudbase.com',
   timeout: 1000000,
   withCredentials: true
 })

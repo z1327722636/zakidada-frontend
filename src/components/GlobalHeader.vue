@@ -32,25 +32,25 @@
         </a-col>
         <a-col flex="100px">
           <div v-if="loginUserStore.loginUser.id">
-            <a-popover position="bottom" :content-style="{ width: '100px',padding: '10px 0' }">
+            <a-popover position="bottom" :content-style="{ width: '100px', padding: '10px 0' }">
               <a-avatar class="avatar" @click="router.push('/my')">
                 <img
                   v-if="loginUserStore.loginUser.userAvatar"
                   alt="avatar"
                   :src="loginUserStore.loginUser.userAvatar"
                 />
-                <span v-else>{{ loginUserStore.loginUser.userName??"匿名" }}</span>
+                <span v-else>{{ loginUserStore.loginUser.userName ?? '匿名' }}</span>
               </a-avatar>
               <template #content>
-                  <li>
-                    <div @click="router.push('/my')">个人中心</div>
-                  </li>
-<!--                  <li>-->
-<!--                    <div  @click="router.push('/user')">设置</div>-->
-<!--                  </li>-->
-                  <li>
-                    <div  @click="loginUserStore.clearLoginUser">退出登录</div>
-                  </li>
+                <li>
+                  <div @click="router.push('/my')">个人中心</div>
+                </li>
+                <!--                  <li>-->
+                <!--                    <div  @click="router.push('/user')">设置</div>-->
+                <!--                  </li>-->
+                <li>
+                  <div @click="loginUserStore.clearLoginUser">退出登录</div>
+                </li>
               </template>
             </a-popover>
           </div>
@@ -90,7 +90,7 @@ const handleLogoClick = () => {
   }
 }
 
-const doMenuItemClick = (key: string) => {
+const doMenuItemClick = (key: string, e: Event) => {
   if (unsavedChangesStore.checkUnsavedChanges()) {
     router.push(key)
   } else {
@@ -115,7 +115,7 @@ const visibleRoutes = computed(() => {
       return false
     }
     // 根据权限过滤菜单
-    return checkAccess(loginUserStore.loginUser, item.meta?.access as string);
+    return checkAccess(loginUserStore.loginUser, item.meta?.access as string)
   })
 })
 
@@ -139,24 +139,23 @@ onMounted(() => {
   box-shadow: #eee 1px 1px 5px;
 }
 
-
 /* 菜单项的样式 */
- li {
-   margin: 0;
+li {
+  margin: 0;
   list-style-type: none; /* 去掉列表项的默认样式 */
   padding: 8px 16px; /* 内边距 */
   cursor: pointer; /* 鼠标指针样式 */
   transition: background-color 0.3s ease; /* 背景颜色变化的过渡效果 */
 }
 
- li:hover {
+li:hover {
   background-color: #f0f0f0; /* 鼠标悬停时的背景颜色*/
 }
-.avatar{
+.avatar {
   cursor: pointer;
 }
 /* 菜单项中包含的文本的样式 */
- li div {
+li div {
   color: #333; /* 文本颜色 */
   text-align: left; /* 文本左对齐 */
 }

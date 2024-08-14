@@ -363,7 +363,10 @@ const addQuestionOption = (index: number, optionIndex: number) => {
 
 // 删除选项
 const deleteQuestionOption = (index: number, optionIndex: number) => {
-  questionContent.value[index].options.splice(optionIndex, 1)
+  if (!questionContent.value[index].options) {
+    return
+  }
+  questionContent.value[index].options?.splice(optionIndex, 1)
   optionCollapseStates.value[index].splice(optionIndex, 1)
 }
 
@@ -389,7 +392,8 @@ const toggleOptionCollapse = (index: number, optionIndex: number) => {
 // 切换所有选项折叠状态
 const toggleAllOptionCollapse = () => {
   questionContent.value.forEach((question, qIndex) => {
-    optionCollapseStates.value[qIndex] = question.options.map(() => !isOptionCollapseStates.value)
+    optionCollapseStates.value[qIndex] =
+      question.options?.map(() => !isOptionCollapseStates.value) || []
   })
   isOptionCollapseStates.value = !isOptionCollapseStates.value
 }
@@ -432,20 +436,6 @@ h2 {
   color: #333;
   font-size: 24px;
   margin-bottom: 20px;
-}
-
-.form-container {
-  width: 100%;
-}
-
-.a-form-item {
-  margin-bottom: 20px;
-}
-
-.a-input,
-.a-select,
-.a-textarea {
-  width: 100%;
 }
 
 .login-button {

@@ -79,6 +79,7 @@ watchEffect(() => {
 })
 
 // 自定义请求
+//@ts-ignore
 const customRequest = async (option: any) => {
   const { onError, onSuccess, fileItem } = option
   try {
@@ -97,7 +98,7 @@ const customRequest = async (option: any) => {
       Message.error('上传失败，' + res.data.message || '')
       onError(new Error(res.data.message))
     }
-  } catch (e) {
+  } catch (e: any) {
     Message.error('上传失败，' + e.message || '')
     onError(new Error(e.message))
   }
