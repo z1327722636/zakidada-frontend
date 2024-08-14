@@ -22,11 +22,13 @@
           </p>
           <p>创建时间：{{ dayjs(data.createTime).format('YYYY-MM-DD HH:mm:ss') }}</p>
           <a-space wrap size="medium">
-            <a-button type="primary" :href="`/answer/do/${id}`">开始答题 </a-button>
+            <a-button type="primary" @click="router.push(`/answer/do/${id}`)">开始答题 </a-button>
             <a-button @click="doShare">分享应用</a-button>
-            <a-button v-if="isMy" :href="`/add/question/${id}`">设置题目 </a-button>
-            <a-button v-if="isMy" :href="`/add/scoring_result/${id}`">设置评分 </a-button>
-            <a-button v-if="isMy" :href="`/add/app/${id}`">修改应用</a-button>
+            <a-button v-if="isMy" @click="router.push(`/add/question/${id}`)">设置题目 </a-button>
+            <a-button v-if="isMy" @click="router.push(`/add/scoring_result/${id}`)"
+              >设置评分
+            </a-button>
+            <a-button v-if="isMy" @click="router.push(`/add/app/${id}`)">修改应用</a-button>
           </a-space>
         </a-col>
         <a-col flex="320px">
@@ -47,7 +49,9 @@ import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from '../../constant/app'
 import { dayjs } from '@arco-design/web-vue/es/_utils/date'
 import { useLoginUserStore } from '@/store/userStore'
 import ShareModal from '@/components/ShareModal.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const props = withDefaults(defineProps<{ id: String }>(), {
   id: () => ''
 })

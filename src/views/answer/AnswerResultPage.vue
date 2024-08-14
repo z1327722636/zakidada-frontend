@@ -26,7 +26,9 @@
           </p>
           <p>答题时间：{{ dayjs(data.createTime).format('YYYY-MM-DD HH:mm:ss') }}</p>
           <a-space size="medium">
-            <a-button type="primary" :href="`/answer/do/${data.appId}`">去答题 </a-button>
+            <a-button type="primary" @click="router.push(`/answer/do/${data.appId}`)"
+              >去答题
+            </a-button>
             <a-button @click="doShare">分享结果</a-button>
           </a-space>
         </a-col>
@@ -47,6 +49,7 @@ import message from '@arco-design/web-vue/es/message'
 import { dayjs } from '@arco-design/web-vue/es/_utils/date'
 import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from '@/constant/app'
 import ShareModal from '@/components/ShareModal.vue'
+import { useRouter } from 'vue-router'
 
 interface Props {
   id: string
@@ -57,7 +60,7 @@ const props = withDefaults(defineProps<Props>(), {
     return ''
   }
 })
-
+const router = useRouter()
 const data = ref<API.UserAnswerVO>({})
 
 /**

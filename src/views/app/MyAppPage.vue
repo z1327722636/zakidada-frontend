@@ -54,7 +54,7 @@
       </template>
       <template #optional="{ record }">
         <a-space>
-          <a-button status="normal" :href="`/add/app/${record.id}`">修改</a-button>
+          <a-button status="normal" @click="router.push(`/add/app/${record.id}`)">修改</a-button>
           <a-button status="danger" @click="doDelete(record)">删除</a-button>
         </a-space>
       </template>
