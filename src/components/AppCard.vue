@@ -5,7 +5,7 @@
     </template>
     <template #cover>
       <div class="cover">
-        <img class="cover-img" :alt="app.appName" :src="app.appIcon" />
+        <a-image class="cover-img" :alt="app.appName" :src="app.appIcon" />
       </div>
     </template>
     <a-card-meta :title="app.appName" :description="app.appDesc">
@@ -19,7 +19,7 @@
       </template>
     </a-card-meta>
   </a-card>
-   <ShareModal :link="shareLink" title="应用分享" ref="shareModalRef" />
+  <ShareModal :link="shareLink" title="应用分享" ref="shareModalRef" />
 </template>
 
 <script setup lang="ts">
@@ -27,7 +27,7 @@ import { IconShareInternal } from '@arco-design/web-vue/es/icon'
 import API from '@/api'
 import { defineProps, ref, withDefaults } from 'vue'
 import { useRouter } from 'vue-router'
-import ShareModal from "@/components/ShareModal.vue";
+import ShareModal from '@/components/ShareModal.vue'
 // import ShareModal from "@/components/ShareModal.vue";
 
 const props = withDefaults(
@@ -91,7 +91,8 @@ const doShare = (e: Event) => {
 
 .cover-img {
   width: 100%;
-  transform: translateY(-20px);
+  height: 100%;
+  object-fit: cover; /* 保证图片适应容器，同时保持图片比例 */
   transition: transform 0.3s;
 }
 

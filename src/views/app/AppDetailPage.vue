@@ -32,7 +32,7 @@
           </a-space>
         </a-col>
         <a-col flex="320px">
-          <a-image width="100%" :src="data.appIcon" />
+          <a-image class="image" :src="data.appIcon" />
         </a-col>
       </a-row>
     </a-card>
@@ -119,5 +119,10 @@ const doShare = (e: Event) => {
 <style scoped>
 .content-wrapper > * {
   margin: 24px;
+}
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>
