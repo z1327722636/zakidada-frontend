@@ -5,7 +5,7 @@
     </template>
     <template #cover>
       <div class="cover">
-        <a-image class="cover-img" :alt="app.appName" :src="app.appIcon" />
+        <a-image width="100%" class="cover-img" :alt="app.appName" :src="app.appIcon" />
       </div>
     </template>
     <a-card-meta :title="app.appName" :description="app.appDesc">
@@ -92,7 +92,7 @@ const doShare = (e: Event) => {
 .cover-img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 保证图片适应容器，同时保持图片比例 */
+  object-fit: cover;
   transition: transform 0.3s;
 }
 

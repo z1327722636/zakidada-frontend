@@ -32,7 +32,7 @@
           </a-space>
         </a-col>
         <a-col flex="320px">
-          <a-image class="image" :src="data.appIcon" />
+          <a-image width="100%" class="image" :src="data.appIcon" />
         </a-col>
       </a-row>
     </a-card>
