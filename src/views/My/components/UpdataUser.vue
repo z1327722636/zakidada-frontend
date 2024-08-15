@@ -14,8 +14,14 @@
           </a-form-item>
           <a-form-item label="个人简介">
             <div style="width: 300px">
-              <Editor :value="form.userProfile ?? '他什么也没留下'" :handleChange="handleChange" />
-              <Viewer />
+              <!--              <Editor :value="form.userProfile ?? '他什么也没留下'" :handleChange="handleChange" />-->
+              <!--              <Viewer />-->
+              <textarea
+                v-model="form.userProfile"
+                rows="10"
+                cols="50"
+                placeholder="给自己一个介绍吧"
+              ></textarea>
             </div>
           </a-form-item>
           <a-form-item>
